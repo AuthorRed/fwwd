@@ -1,6 +1,11 @@
 package cn.author.fwwd.controller;
 
 import cn.author.fwwd.Utils.FileUtils;
+import cn.author.fwwd.dao.mapper.Order1Mapper;
+import cn.author.fwwd.dao.model.Order1;
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +21,17 @@ import java.util.UUID;
 //@CrossOrigin(origins = {"http://localhost:8000"}, maxAge = 100)
 //@CrossOrigin
 public class FileController {
+    @Autowired
+    private Order1Mapper order1Mapper;
     /**
      * 跳转到文件上传页面
      * @return
      */
     @RequestMapping("test")
     public String test(){
-        return String.valueOf(System.currentTimeMillis());
+        Order1 order1 = order1Mapper.selectByPrimaryKey(1);
+
+        return JSON.toJSONString(order1);
     }
     /**
      *
