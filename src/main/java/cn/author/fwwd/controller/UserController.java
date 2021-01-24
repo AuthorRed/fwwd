@@ -1,5 +1,6 @@
 package cn.author.fwwd.controller;
 
+import cn.author.fwwd.service.UserService;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,11 +11,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("file")
-//@CrossOrigin(origins = {"http://localhost:8000"}, maxAge = 100)
-//@CrossOrigin
-public class FileController {
+@RequestMapping("user")
+public class UserController {
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("countUID")
+    public String countUID(String uid){
+        int i = userService.countUID(uid);
+
+        return null;
+    }
     /**
+     *
      * @param file 要上传的文件
      * @return
      */
