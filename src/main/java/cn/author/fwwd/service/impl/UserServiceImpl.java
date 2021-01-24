@@ -7,6 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.SimpleIdGenerator;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,5 +42,23 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public void register(User user) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
+        String strDate = sdf.format(date);
+        Long id = Long.valueOf(strDate);
+        user.setId(id);
+
+        String uuid = UUID.randomUUID().toString();
+        String salt = uuid.replaceAll("-", "");
+        user.setSalt(salt);
+        user.setRole("admin");
+        if(StringUtils.isBlank(user.getUid())||StringUtils.isBlank(user.getUid())){
+            throw new RuntimeException("用户名和密码不能为空!");
+        }
+        userMapper.insertSelective(user);
     }
 }

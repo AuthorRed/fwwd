@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.author.fwwd.dao.mapper.UserMapper" >
   <resultMap id="BaseResultMap" type="cn.author.fwwd.dao.model.User" >
-    <id column="ID" property="id" jdbcType="INTEGER" />
+    <id column="ID" property="id" jdbcType="BIGINT" />
     <result column="UID" property="uid" jdbcType="VARCHAR" />
     <result column="PWD" property="pwd" jdbcType="VARCHAR" />
     <result column="SALT" property="salt" jdbcType="VARCHAR" />
@@ -31,15 +31,15 @@
     from user0
     where UID = #{uid,jdbcType=VARCHAR}
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from user0
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from user0
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="cn.author.fwwd.dao.model.User" >
     insert into user0 (ID, UID, PWD, 
@@ -47,7 +47,7 @@
       PHONE, STATUS, EMAIL, 
       UPDATE_TIME, UPDATE_PERSON, HASH, 
       HEAD_IMG)
-    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
       #{salt,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updatePerson,jdbcType=VARCHAR}, #{hash,jdbcType=INTEGER}, 
@@ -98,7 +98,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="uid != null" >
         #{uid,jdbcType=VARCHAR},
@@ -178,7 +178,7 @@
         HEAD_IMG = #{headImg,jdbcType=VARCHAR},
       </if>
     </set>
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.author.fwwd.dao.model.User" >
     update user0
@@ -194,6 +194,6 @@
       UPDATE_PERSON = #{updatePerson,jdbcType=VARCHAR},
       HASH = #{hash,jdbcType=INTEGER},
       HEAD_IMG = #{headImg,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
