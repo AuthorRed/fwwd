@@ -2,13 +2,10 @@ package cn.author.fwwd.controller;
 
 import cn.author.fwwd.common.ResultMsg;
 import cn.author.fwwd.service.UserService;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import cn.author.fwwd.dao.model.User;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("user")
@@ -16,6 +13,20 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @PostMapping("login")
+    public ResultMsg login(String uid,String pwd){
+        ResultMsg resultMsg = null;
+        try {
+            User user = userService.usernamePwdLogin(uid, pwd);
+            resultMsg = ResultMsg.success();
+            resultMsg.getExtenal().put("user",user);
+        }catch (Exception e){
+            log.error("登录失败:",e);
+            return ResultMsg.error(e.getMessage());
+        }
+        return resultMsg;
+    }
 
     @RequestMapping("countUID")
     public ResultMsg countUID(String uid){
@@ -35,11 +46,11 @@ public class UserController {
     public ResultMsg register(User user){
         ResultMsg resultMsg = null;
         try {
-            userService.register(user);
+            User register = userService.register(user);
             resultMsg = ResultMsg.success();
+            resultMsg.getExtenal().put("user",register);
         }catch (Exception e){
-            e.printStackTrace();
-
+            log.error("注册失败:",e);
             return ResultMsg.error(e.getMessage());
         }
         return resultMsg;

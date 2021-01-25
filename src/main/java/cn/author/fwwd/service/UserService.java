@@ -7,5 +7,5 @@ public interface UserService {
 
     public User usernamePwdLogin(String username, String pwd);
 
-    public void register(User user);
+    public User register(User user);
 }
