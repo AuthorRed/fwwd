@@ -9,7 +9,7 @@ public class File {
 
     private String host;
 
-    private String fid;
+    private Long fid;
 
     private Integer fidHash;
 
@@ -51,12 +51,12 @@ public class File {
         this.host = host == null ? null : host.trim();
     }
 
-    public String getFid() {
+    public Long getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
-        this.fid = fid == null ? null : fid.trim();
+    public void setFid(Long fid) {
+        this.fid = fid;
     }
 
     public Integer getFidHash() {
