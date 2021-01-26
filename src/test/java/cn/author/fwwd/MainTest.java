@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 public class MainTest {
 
     public static void main(String[] args) {
+        long id = System.currentTimeMillis() * 10000;
+
+
         log.info("start");
         for (int i = 0; i <10000 ; i++) {
             DateUtils.getSerialId("aa");
