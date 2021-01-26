@@ -19,6 +19,9 @@ public class UserController {
         ResultMsg resultMsg = null;
         try {
             User user = userService.usernamePwdLogin(uid, pwd);
+            if(null==user){
+                return ResultMsg.error("用户名密码不正确!");
+            }
             resultMsg = ResultMsg.success();
             resultMsg.getExtenal().put("user",user);
         }catch (Exception e){

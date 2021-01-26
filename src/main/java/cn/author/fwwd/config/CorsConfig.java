@@ -16,7 +16,8 @@ public class CorsConfig {
                 // 设置允许跨域的路径
                 registry.addMapping("/**")
                         // 设置允许跨域请求的域名
-                        .allowedOrigins("http://localhost:8000","http://192.168.1.11:8000","http://192.168.1.11")
+                        .allowedOrigins("http://localhost:8000","http://192.168.1.11:8000","http://192.168.1.11",
+                                "http://10.6.10.109:8000","http://10.6.10.109")
                         // 是否允许证书
                         .allowCredentials(true)
                         // 设置允许的方法
