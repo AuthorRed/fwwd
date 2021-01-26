@@ -1,12 +1,24 @@
 package cn.author.fwwd;
 
-import cn.author.fwwd.Utils.HashUtils;
+import cn.author.fwwd.Utils.DateUtils;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.UUID;
-
+@Slf4j
 public class MainTest {
 
-    public static void testEncoding() throws Exception {
+    public static void main(String[] args) {
+        log.info("start");
+        for (int i = 0; i <10000 ; i++) {
+            DateUtils.getSerialId("aa");
+//            new Thread(()->
+//                    log.info(DateUtils.getSerialId("aa"))
+//            ).start();
+        }
+        log.info("end");
+    }
+
+
+    private static void testEncoding() throws Exception {
         //255 255 255
         String str = "今天是个好日子！";
         byte[] utf8 = str.getBytes("utf-8");
