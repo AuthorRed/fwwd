@@ -3,20 +3,28 @@ package cn.author.fwwd;
 import cn.author.fwwd.Utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+
+import static org.springframework.test.context.transaction.TestTransaction.start;
+
 @Slf4j
 public class MainTest {
 
-    public static void main(String[] args) {
-        long id = System.currentTimeMillis() * 10000;
-
-
+    public static void main(String[] args) throws Exception{
+//        System.currentTimeMillis() * 10000
         log.info("start");
-        for (int i = 0; i <10000 ; i++) {
-            DateUtils.getSerialId("aa");
-//            new Thread(()->
-//                    log.info(DateUtils.getSerialId("aa"))
-//            ).start();
+        HashSet<Long> longs = new HashSet<>();
+        for (int i = 0; i <500 ; i++) {
+            new Thread(() ->
+                    longs.add(DateUtils.getSerialId(11l,22l))
+            ).start();
+//            longs.add(DateUtils.getSerialId(11l,22l));
+//            longs.add(1l);
         }
+        Thread.sleep(3000);
+        System.out.println(longs.size());
         log.info("end");
     }
 
