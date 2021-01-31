@@ -1,7 +1,11 @@
 package cn.author.fwwd.Utils;
 
+import cn.author.fwwd.config.PropertiesConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -16,6 +20,7 @@ public  class DateUtils {
     private static Logger logger	= LoggerFactory.getLogger(DateUtils.class);
     private static volatile AtomicInteger idCount = new AtomicInteger(1);
     private static volatile AtomicLong previousMillis = new AtomicLong(System.currentTimeMillis());
+
 
     public static synchronized final Long getSerialId(Long server,Long service){
         long serialId = 0l;

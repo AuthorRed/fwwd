@@ -1,40 +1,81 @@
 package cn.author.fwwd.controller;
 
-import com.alibaba.fastjson.JSON;
+import cn.author.fwwd.Utils.DateUtils;
+import cn.author.fwwd.Utils.FileContentTypeUtils;
+import cn.author.fwwd.common.ResultMsg;
+import cn.author.fwwd.config.PropertiesConfig;
+import cn.author.fwwd.enums.ServiceID;
+import cn.author.fwwd.service.FileService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.UUID;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
+@Slf4j
 @RestController
 @RequestMapping("file")
 //@CrossOrigin(origins = {"http://localhost:8000"}, maxAge = 100)
 //@CrossOrigin
 public class FileController {
+
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private PropertiesConfig config;
     /**
      * @param file 要上传的文件
      * @return
      */
-    @RequestMapping("fileUpload")
-    public String upload(@RequestParam("file") MultipartFile file){
+    @PostMapping("fileUpload")
+    public ResultMsg upload(@RequestParam("file") MultipartFile file){
         // 要上传的目标文件存放路径
-        String localPath = "E:\\upload";
-        String fullPath = localPath + UUID.randomUUID();
-        System.out.println(file.getOriginalFilename());
-//        for (MultipartFile file : files) {
-//            String originalFilename = file.getOriginalFilename();
-//
-//            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-//            FileUtils.upload(file,)
-//        }
-//        if (FileUtils.upload(file, localPath, file.getOriginalFilename())){
-//            // 上传成功，给出页面提示
-//            msg = "上传成功！";
-//        }
+        try{
+            String localPath = "D:\\upload";
+            String fullPath = localPath + DateUtils.getSerialId(config.getServerId(), ServiceID.FILE.getCode());
+            System.out.println(file.getOriginalFilename());
+            Long fileId = fileService.saveFile2Disk(file, fullPath, "image");
+            ResultMsg resultMsg = ResultMsg.success();
+            resultMsg.getExtenal().put("fileId",fileId);
+            return resultMsg;
+        }catch (Exception e){
+            log.error("文件上传失败:"+e);
+            return ResultMsg.error(e.getMessage());
+        }
+    }
+    @GetMapping("getFileById")
+    public void getFileById(Long id, HttpServletResponse response){
+        try {
+            Attach attach = fileService.selectByPrimaryKey(id);
+            if(null==attach){
+                return;
+            }
+            String fileName = attach.getFileName();
+            String extention = fileName.substring(fileName.lastIndexOf("."));
+            if(null==attach || StringUtils.isBlank(attach.getUrl())|| StringUtils.isBlank(fileName)|| StringUtils.isBlank(extention)){
+                return;
+            }
+            File file = new File(attach.getUrl());
+//            String l=request.getRealPath("/")+"/"+url;
+//            String filename = file.getName();
+            InputStream fis = new BufferedInputStream(new FileInputStream(file));
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            fis.close();
+            response.reset();
+            // 设置response的Header
+            response.addHeader("Content-Length", "" + file.length());
+            response.setContentType(FileContentTypeUtils.getContentType(extention));
 
-        return "forward:/test";
+            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+            toClient.write(buffer);
+            toClient.flush();
+            toClient.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

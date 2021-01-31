@@ -31,9 +31,12 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="file0" domainObjectName="File" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+        <table tableName="commodity0" domainObjectName="Commodity" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
                enableUpdateByExample="false">
         </table>
+        <!--<table tableName="attach0" domainObjectName="Attach" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+               enableUpdateByExample="false">
+        </table>-->
 
     </context>
 </generatorConfiguration>

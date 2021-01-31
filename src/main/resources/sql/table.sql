@@ -15,14 +15,14 @@ CREATE TABLE `user0` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `file0` (
+CREATE TABLE `attach0` (
    `ID` bigint(20) NOT NULL,
    `URL` varchar(64) DEFAULT NULL,
    `HOST` varchar(32) DEFAULT NULL,
    `FID` varchar(32) DEFAULT NULL,
    `FID_HASH` int(11) DEFAULT NULL,
-   `ORDER` tinyint(4) DEFAULT NULL,
-   `NAME` varchar(32) DEFAULT NULL,
+   `DISPLAY_ORDER` tinyint(4) DEFAULT NULL,
+   `FILE_NAME` varchar(32) DEFAULT NULL,
    `STATUS` tinyint(4) DEFAULT NULL,
    `TYPE` tinyint(4) DEFAULT NULL,
    `UPLOAD_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -30,3 +30,11 @@ CREATE TABLE `file0` (
    `CATEGORY` varchar(16) DEFAULT NULL,
    PRIMARY KEY (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+
+CREATE TABLE `commodity0` (
+  `id` bigint(20) NOT NULL,
+  `title` varchar(128) DEFAULT NULL,
+  `seller` varchar(32) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

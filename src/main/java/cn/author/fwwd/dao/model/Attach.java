@@ -2,7 +2,7 @@ package cn.author.fwwd.dao.model;
 
 import java.util.Date;
 
-public class File {
+public class Attach {
     private Long id;
 
     private String url;
@@ -13,9 +13,9 @@ public class File {
 
     private Integer fidHash;
 
-    private Byte order;
+    private Byte displayOrder;
 
-    private String name;
+    private String fileName;
 
     private Byte status;
 
@@ -67,20 +67,20 @@ public class File {
         this.fidHash = fidHash;
     }
 
-    public Byte getOrder() {
-        return order;
+    public Byte getDisplayOrder() {
+        return displayOrder;
     }
 
-    public void setOrder(Byte order) {
-        this.order = order;
+    public void setDisplayOrder(Byte displayOrder) {
+        this.displayOrder = displayOrder;
     }
 
-    public String getName() {
-        return name;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setFileName(String fileName) {
+        this.fileName = fileName == null ? null : fileName.trim();
     }
 
     public Byte getStatus() {

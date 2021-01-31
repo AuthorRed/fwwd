@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.author.fwwd.dao.mapper.FileMapper" >
-  <resultMap id="BaseResultMap" type="cn.author.fwwd.dao.model.File" >
+<mapper namespace="cn.author.fwwd.dao.mapper.AttachMapper" >
+  <resultMap id="BaseResultMap" type="cn.author.fwwd.dao.model.Attach" >
     <id column="ID" property="id" jdbcType="BIGINT" />
     <result column="URL" property="url" jdbcType="VARCHAR" />
     <result column="HOST" property="host" jdbcType="VARCHAR" />
     <result column="FID" property="fid" jdbcType="BIGINT" />
     <result column="FID_HASH" property="fidHash" jdbcType="INTEGER" />
-    <result column="ORDER" property="order" jdbcType="TINYINT" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DISPLAY_ORDER" property="displayOrder" jdbcType="TINYINT" />
+    <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="TINYINT" />
     <result column="TYPE" property="type" jdbcType="TINYINT" />
     <result column="UPLOAD_TIME" property="uploadTime" jdbcType="TIMESTAMP" />
@@ -16,33 +16,33 @@
     <result column="CATEGORY" property="category" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    ID, URL, HOST, FID, FID_HASH, ORDER, NAME, STATUS, TYPE, UPLOAD_TIME, UPLOAD_UID, 
-    CATEGORY
+    ID, URL, HOST, FID, FID_HASH, DISPLAY_ORDER, FILE_NAME, STATUS, TYPE, UPLOAD_TIME, 
+    UPLOAD_UID, CATEGORY
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from file0
+    from attach0
     where ID = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from file0
+    delete from attach0
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.author.fwwd.dao.model.File" >
-    insert into file0 (ID, URL, HOST, 
-      FID, FID_HASH, ORDER, 
-      NAME, STATUS, TYPE, 
+  <insert id="insert" parameterType="cn.author.fwwd.dao.model.Attach" >
+    insert into attach0 (ID, URL, HOST, 
+      FID, FID_HASH, DISPLAY_ORDER, 
+      FILE_NAME, STATUS, TYPE, 
       UPLOAD_TIME, UPLOAD_UID, CATEGORY
       )
     values (#{id,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, #{host,jdbcType=VARCHAR}, 
-      #{fid,jdbcType=BIGINT}, #{fidHash,jdbcType=INTEGER}, #{order,jdbcType=TINYINT}, 
-      #{name,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{type,jdbcType=TINYINT}, 
+      #{fid,jdbcType=BIGINT}, #{fidHash,jdbcType=INTEGER}, #{displayOrder,jdbcType=TINYINT}, 
+      #{fileName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{type,jdbcType=TINYINT}, 
       #{uploadTime,jdbcType=TIMESTAMP}, #{uploadUid,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.author.fwwd.dao.model.File" >
-    insert into file0
+  <insert id="insertSelective" parameterType="cn.author.fwwd.dao.model.Attach" >
+    insert into attach0
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         ID,
@@ -59,11 +59,11 @@
       <if test="fidHash != null" >
         FID_HASH,
       </if>
-      <if test="order != null" >
-        ORDER,
+      <if test="displayOrder != null" >
+        DISPLAY_ORDER,
       </if>
-      <if test="name != null" >
-        NAME,
+      <if test="fileName != null" >
+        FILE_NAME,
       </if>
       <if test="status != null" >
         STATUS,
@@ -97,11 +97,11 @@
       <if test="fidHash != null" >
         #{fidHash,jdbcType=INTEGER},
       </if>
-      <if test="order != null" >
-        #{order,jdbcType=TINYINT},
+      <if test="displayOrder != null" >
+        #{displayOrder,jdbcType=TINYINT},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
@@ -120,8 +120,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.author.fwwd.dao.model.File" >
-    update file0
+  <update id="updateByPrimaryKeySelective" parameterType="cn.author.fwwd.dao.model.Attach" >
+    update attach0
     <set >
       <if test="url != null" >
         URL = #{url,jdbcType=VARCHAR},
@@ -135,11 +135,11 @@
       <if test="fidHash != null" >
         FID_HASH = #{fidHash,jdbcType=INTEGER},
       </if>
-      <if test="order != null" >
-        ORDER = #{order,jdbcType=TINYINT},
+      <if test="displayOrder != null" >
+        DISPLAY_ORDER = #{displayOrder,jdbcType=TINYINT},
       </if>
-      <if test="name != null" >
-        NAME = #{name,jdbcType=VARCHAR},
+      <if test="fileName != null" >
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         STATUS = #{status,jdbcType=TINYINT},
@@ -159,14 +159,14 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.author.fwwd.dao.model.File" >
-    update file0
+  <update id="updateByPrimaryKey" parameterType="cn.author.fwwd.dao.model.Attach" >
+    update attach0
     set URL = #{url,jdbcType=VARCHAR},
       HOST = #{host,jdbcType=VARCHAR},
       FID = #{fid,jdbcType=BIGINT},
       FID_HASH = #{fidHash,jdbcType=INTEGER},
-      ORDER = #{order,jdbcType=TINYINT},
-      NAME = #{name,jdbcType=VARCHAR},
+      DISPLAY_ORDER = #{displayOrder,jdbcType=TINYINT},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=TINYINT},
       TYPE = #{type,jdbcType=TINYINT},
       UPLOAD_TIME = #{uploadTime,jdbcType=TIMESTAMP},

@@ -4,9 +4,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-    String saveFile2Disk(MultipartFile uploadFile, String fid, String moduleId, String category) throws Throwable;
+    Attach selectByPrimaryKey(Long id);
 
-    byte[] queryFileById(String id);
+
+    Long saveFile2Disk(MultipartFile uploadFile, String fid, String category) throws Exception;
+
+
 
     public void deleteByPrimaryKey(String id) throws Throwable;
 
