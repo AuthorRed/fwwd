@@ -3,7 +3,8 @@ package cn.author.fwwd.enums;
 
 
 public enum ServiceID {
-    FILE("file",11l);
+    FILE("file",11l),
+    COMMODITY("commodity",12l);
     private String name;
     private long code;
 

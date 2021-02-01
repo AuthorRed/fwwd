@@ -1,6 +1,8 @@
 package cn.author.fwwd.service.impl;
 
 import cn.author.fwwd.config.PropertiesConfig;
+import cn.author.fwwd.dao.mapper.AttachMapper;
+import cn.author.fwwd.dao.model.Attach;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.FileService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.author.fwwd.Utils.DateUtils;
 
 import java.io.File;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -20,6 +23,11 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private PropertiesConfig config;
     public static final String UPLOAD_DIR ="UPLOAD_DIR";
+
+    @Override
+    public List<Attach> selectByFid(Long id){
+        return attachMapper.selectByFid(id);
+    }
     @Override
     public Attach selectByPrimaryKey(Long id){
         if(null==id||id==0){

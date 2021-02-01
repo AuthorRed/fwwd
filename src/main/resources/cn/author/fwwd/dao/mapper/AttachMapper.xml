@@ -19,6 +19,13 @@
     ID, URL, HOST, FID, FID_HASH, DISPLAY_ORDER, FILE_NAME, STATUS, TYPE, UPLOAD_TIME, 
     UPLOAD_UID, CATEGORY
   </sql>
+  <select id="selectByFid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from attach0
+    where FID = #{fid,jdbcType=BIGINT}
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
