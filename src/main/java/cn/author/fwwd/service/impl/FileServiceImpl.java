@@ -1,5 +1,6 @@
 package cn.author.fwwd.service.impl;
 
+import cn.author.fwwd.Utils.HashUtils;
 import cn.author.fwwd.config.PropertiesConfig;
 import cn.author.fwwd.dao.mapper.AttachMapper;
 import cn.author.fwwd.dao.model.Attach;
@@ -36,11 +37,11 @@ public class FileServiceImpl implements FileService {
        return attachMapper.selectByPrimaryKey(id);
     }
     @Override
-    public Long saveFile2Disk(MultipartFile multifile, String fid, String category) throws Exception {
-        Attach queryParams = new Attach();
-        queryParams.setCategory(category);
-//        queryParams.setModuleId(moduleId);
-//        queryParams.setFid(todoId);
+    public Long saveFile2Disk(MultipartFile multifile, Long fid, String category) throws Exception {
+        Attach attach = new Attach();
+        attach.setCategory(category);
+        attach.setFid(fid);
+        attach.setFidHash(HashUtils.getIntHash(String.valueOf(fid)));
         String suffix = multifile.getOriginalFilename().substring(multifile.getOriginalFilename().lastIndexOf(".")+1);
         if(StringUtils.isBlank(suffix)){
             throw new RuntimeException("附件格式非法，文件名称需带后缀，请重命名！");
@@ -50,10 +51,7 @@ public class FileServiceImpl implements FileService {
         String fileName = fileId+"."+suffix;
         String fileUrl = this.saveFile2DiskWithNameDir(multifile, fileName, dir);
 
-
-        Attach attach = queryParams;
         attach.setId(fileId);
-//        attach.setFid(todoId);
         attach.setHost("192.168.1.8:8080");
         attach.setCategory(category);
         attach.setUrl(fileUrl);

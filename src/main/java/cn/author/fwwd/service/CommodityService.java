@@ -4,6 +4,8 @@ import cn.author.fwwd.dao.model.Commodity;
 import cn.author.fwwd.dao.model.User;
 
 public interface CommodityService {
+    int insertInBatch(Integer num,Integer page);
+
     int deleteByPrimaryKey(Long id);
 
     int insertSelective(Commodity record);

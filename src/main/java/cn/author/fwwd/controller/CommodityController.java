@@ -76,6 +76,18 @@ public class CommodityController {
         }
         return resultMsg;
     }
+    @GetMapping("batchInsert")
+    public ResultMsg getCommodityId(Integer num,Integer page){
+        ResultMsg resultMsg = null;
+        try {
+            commodityService.insertInBatch(num,page);
+            resultMsg = ResultMsg.success();
+        }catch (Exception e){
+            log.error("失败:",e);
+            return ResultMsg.error(e.getMessage());
+        }
+        return resultMsg;
+    }
 
 
 }

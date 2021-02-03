@@ -3,7 +3,9 @@ package cn.author.fwwd.dao.mapper;
 import cn.author.fwwd.dao.model.Attach;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface AttachMapper {
     List<Attach> selectByFid(Long id);
 

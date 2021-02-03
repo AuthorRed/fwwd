@@ -13,6 +13,19 @@
   <sql id="Base_Column_List" >
     id, title, seller, status, price, unit, update_time
   </sql>
+  <insert id="insertInBatch" parameterType="java.util.List" >
+    insert into commodity0 (id, title, seller,
+      status, price, unit,
+      update_time)
+    values
+      <foreach collection="list" item="item" separator=",">
+        (#{item.id,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.seller,jdbcType=VARCHAR},
+        #{item.status,jdbcType=INTEGER}, #{item.price,jdbcType=DECIMAL}, #{item.unit,jdbcType=VARCHAR},
+        #{item.updateTime,jdbcType=TIMESTAMP})
+
+      </foreach>
+
+  </insert>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

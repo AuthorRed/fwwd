@@ -32,13 +32,13 @@ public class FileController {
      * @return
      */
     @PostMapping("fileUpload")
-    public ResultMsg upload(@RequestParam("file") MultipartFile file){
+    public ResultMsg upload(@RequestParam("file") MultipartFile file,Long fid){
         // 要上传的目标文件存放路径
         try{
-            String localPath = "D:\\upload";
-            String fullPath = localPath + DateUtils.getSerialId(config.getServerId(), ServiceID.FILE.getCode());
-            System.out.println(file.getOriginalFilename());
-            Long fileId = fileService.saveFile2Disk(file, fullPath, "image");
+//            String localPath = "D:\\upload";
+//            String fullPath = localPath + DateUtils.getSerialId(config.getServerId(), ServiceID.FILE.getCode());
+
+            Long fileId = fileService.saveFile2Disk(file, fid, "image");
             ResultMsg resultMsg = ResultMsg.success();
             resultMsg.getExtenal().put("fileId",fileId);
             return resultMsg;
