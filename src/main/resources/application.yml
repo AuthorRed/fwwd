@@ -30,6 +30,9 @@ spring:
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
 
+logging:
+  level:
+    cn.author.fwwd.dao : debug
 author:
   server_id: 11
   file_server_ip: 192.168.1.8

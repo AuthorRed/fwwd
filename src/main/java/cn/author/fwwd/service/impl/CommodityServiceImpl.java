@@ -9,18 +9,15 @@ import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.enums.CommodityStatus;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.CommodityService;
-import cn.author.fwwd.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.UUID;
+import java.util.List;
+
 
 @Service
 @Slf4j
@@ -28,7 +25,28 @@ public class CommodityServiceImpl implements CommodityService {
     @Autowired
     private CommodityMapper commodityMapper;
     @Autowired
+    private UserMapper userMapper;
+    @Autowired
     private PropertiesConfig config;
+    @Override
+    public List<Commodity> pageList(Commodity commodity){
+        if(null==commodity.getStatus()){
+            commodity.setStatus(CommodityStatus.ADDED.getCode());
+        }
+        if(null==commodity || null==commodity.getSeller()){
+            throw new RuntimeException("商品用户不能为空!");
+        }
+        if(null==commodity.getSellerId()){
+            User user = userMapper.selectByUID(commodity.getSeller());
+            commodity.setSellerId(user.getId());
+        }
+
+        //Integer count = commodityMapper.count(commodity);
+        log.info("list start");
+        List<Commodity> list = commodityMapper.list(commodity);
+        log.info("list end");
+        return list;
+    }
     @Override
     public int insertInBatch(Integer num,Integer page){
         for (int j = 0; j < page; j++) {
@@ -43,6 +61,7 @@ public class CommodityServiceImpl implements CommodityService {
                 commodity.setPrice(new BigDecimal(String.valueOf(i)));
                 commodity.setUpdateTime(now);
                 commodity.setSeller("11");
+                commodity.setSellerId(20210126091134622l);
                 commodity.setTitle("苹果手机iphone X");
                 commodity.setUnit("元");
                 list.add(commodity);
@@ -59,13 +78,15 @@ public class CommodityServiceImpl implements CommodityService {
 
     @Override
     public int insertSelective(Commodity record){
-//        Long id = DateUtils.getSerialId(config.getServerId(), ServiceID.COMMODITY.getCode());
-//        record.setId(id);
-        if(null==record.getId() ||0l==record.getId()){
-            throw new RuntimeException("添加商品失败，请刷新页面重试!");
+        if(null==record.getId() ||0l==record.getId()||null==record.getSeller()){
+            throw new RuntimeException("添加商品失败，请先登陆后刷新页面重试!");
         }
         record.setUpdateTime(new Date());
         record.setStatus(CommodityStatus.ADDED.getCode());
+        if(null==record.getSellerId()){
+            User user = userMapper.selectByUID(record.getSeller());
+            record.setSellerId(user.getId());
+        }
         return commodityMapper.insertSelective(record);
     }
 

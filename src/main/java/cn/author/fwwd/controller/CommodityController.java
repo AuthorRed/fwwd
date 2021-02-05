@@ -5,11 +5,9 @@ import cn.author.fwwd.common.ResultMsg;
 import cn.author.fwwd.config.PropertiesConfig;
 import cn.author.fwwd.dao.model.Attach;
 import cn.author.fwwd.dao.model.Commodity;
-import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.CommodityService;
 import cn.author.fwwd.service.FileService;
-import cn.author.fwwd.service.UserService;
 import cn.author.fwwd.vo.CommodityVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
 import java.util.List;
 
 @RestController
@@ -31,7 +28,19 @@ public class CommodityController {
     private FileService fileService;
     @Autowired
     private PropertiesConfig config;
-
+    @GetMapping("list")
+    public ResultMsg list(Commodity commodity,Integer page,Integer rows){
+        ResultMsg resultMsg = null;
+        try {
+            List<Commodity> list  = commodityService.pageList(commodity);
+            resultMsg = ResultMsg.success();
+            resultMsg.getExtenal().put("list",list);
+        }catch (Exception e){
+            log.error("获取商品列表失败:",e);
+            return ResultMsg.error(e.getMessage());
+        }
+        return resultMsg;
+    }
     @PostMapping("addCommodity")
     public ResultMsg addCommodity(Commodity commodity){
         ResultMsg resultMsg = null;

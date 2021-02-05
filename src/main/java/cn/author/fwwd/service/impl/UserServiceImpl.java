@@ -1,7 +1,10 @@
 package cn.author.fwwd.service.impl;
 
+import cn.author.fwwd.Utils.DateUtils;
+import cn.author.fwwd.config.PropertiesConfig;
 import cn.author.fwwd.dao.mapper.UserMapper;
 import cn.author.fwwd.dao.model.User;
+import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private PropertiesConfig config;
 
     @Override
     public int countUID(String uid) {
@@ -63,10 +68,7 @@ public class UserServiceImpl implements UserService {
         if(0!=count){
             throw new RuntimeException("用户名已存在");
         }
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-        String strDate = sdf.format(date);
-        Long id = Long.valueOf(strDate);
+        Long id = DateUtils.getSerialId(config.getServerId(), ServiceID.USER.getCode());
         user.setId(id);
 
         String uuid = UUID.randomUUID().toString();

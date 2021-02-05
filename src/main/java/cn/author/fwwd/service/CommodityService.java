@@ -1,9 +1,12 @@
 package cn.author.fwwd.service;
 
 import cn.author.fwwd.dao.model.Commodity;
-import cn.author.fwwd.dao.model.User;
+
+import java.util.List;
 
 public interface CommodityService {
+    public List<Commodity> pageList(Commodity commodity);
+
     int insertInBatch(Integer num,Integer page);
 
     int deleteByPrimaryKey(Long id);

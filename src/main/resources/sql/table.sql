@@ -39,5 +39,8 @@ CREATE TABLE `commodity0` (
    `price` decimal(8,2) DEFAULT NULL,
    `unit` varchar(16) DEFAULT NULL,
    `update_time` timestamp NULL DEFAULT NULL,
-   PRIMARY KEY (`id`)
+   `seller_id` bigint(20) DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   KEY `price_index` (`price`),
+   KEY `seller_id_index` (`seller_id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4

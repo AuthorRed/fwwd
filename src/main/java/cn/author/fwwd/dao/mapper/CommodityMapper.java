@@ -7,6 +7,10 @@ import java.util.List;
 
 @Mapper
 public interface CommodityMapper {
+    Integer count(Commodity commodity);
+
+    List<Commodity> list(Commodity commodity);
+
     int insertInBatch(List<Commodity> list);
 
     int deleteByPrimaryKey(Long id);

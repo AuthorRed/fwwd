@@ -1,8 +1,13 @@
 package cn.author.fwwd.Utils;
 
 public class HashUtils {
-    private static final Integer count = 1;
+    private static final Integer count = 6;
 
+    public static Integer getIntHash(Long number) throws Exception{
+        Long abs = (Long)Math.abs(number % count);
+        return  abs.intValue();
+
+    }
     public static Integer getIntHash(String str) throws Exception{
         str=str.trim();
         if(str.length()>3){

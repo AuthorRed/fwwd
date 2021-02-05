@@ -5,27 +5,47 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="seller" property="seller" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, seller, status, price, unit, update_time
+    id, title, seller,seller_id, status, price, unit, update_time
   </sql>
   <insert id="insertInBatch" parameterType="java.util.List" >
-    insert into commodity0 (id, title, seller,
+    insert into commodity0 (id, title, seller,seller_id,
       status, price, unit,
       update_time)
     values
       <foreach collection="list" item="item" separator=",">
-        (#{item.id,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.seller,jdbcType=VARCHAR},
+        (#{item.id,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.seller,jdbcType=VARCHAR}, #{item.sellerId,jdbcType=BIGINT},
         #{item.status,jdbcType=INTEGER}, #{item.price,jdbcType=DECIMAL}, #{item.unit,jdbcType=VARCHAR},
         #{item.updateTime,jdbcType=TIMESTAMP})
 
       </foreach>
-
   </insert>
+  <select id="list" resultMap="BaseResultMap" parameterType="cn.author.fwwd.dao.model.Commodity"  >
+    select
+    <include refid="Base_Column_List" />
+    from commodity0
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+    <if test="status != null" >
+    and status = #{status,jdbcType=INTEGER}
+    </if>
+    ORDER BY id DESC
+    LIMIT #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+  <select id="count" resultType="int">
+    select
+    count(*)
+    from commodity0
+    where seller_id = #{sellerId,jdbcType=BIGINT}
+    <if test="status != null" >
+    and status = #{status,jdbcType=INTEGER}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -37,10 +57,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="cn.author.fwwd.dao.model.Commodity" >
-    insert into commodity0 (id, title, seller, 
+    insert into commodity0 (id, title, seller, sellerId,
       status, price, unit, 
       update_time)
-    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{seller,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{seller,jdbcType=VARCHAR}, #{sellerId,jdbcType=BIGINT},
       #{status,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -55,6 +75,9 @@
       </if>
       <if test="seller != null" >
         seller,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
       </if>
       <if test="status != null" >
         status,
@@ -79,6 +102,9 @@
       <if test="seller != null" >
         #{seller,jdbcType=VARCHAR},
       </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=BIGINT},
+      </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
@@ -102,6 +128,9 @@
       <if test="seller != null" >
         seller = #{seller,jdbcType=VARCHAR},
       </if>
+      <if test="sellerId != null" >
+        sellerId = #{sellerId,jdbcType=BIGINT},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -121,6 +150,7 @@
     update commodity0
     set title = #{title,jdbcType=VARCHAR},
       seller = #{seller,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       unit = #{unit,jdbcType=VARCHAR},

@@ -1,24 +1,27 @@
 package cn.author.fwwd.common;
 
-import lombok.Data;
 
-@Data
+
+
 public class PageBean {
     private Integer page;
     private Integer rows;
-    private String status;
 
-    public static PageBean buildParams(PageBean pageBean){
-        Integer page = pageBean.getPage();
-        if (page == null || page < 1) {
-            pageBean.setPage(1);
-        }
-        Integer rows = pageBean.getRows();
-        if (rows == null || rows < 1) {
-            pageBean.setRows(10);
-        }
-        return pageBean;
+    public Integer getPage() {
+        if(null==this.page || this.page<1){ this.page=1;}
+        return page;
     }
 
+    public void setPage(Integer page) {
+        this.page = page;
+    }
 
+    public Integer getRows() {
+        if(null==this.rows || this.rows<1){ this.rows=10; }
+        return rows;
+    }
+
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
 }

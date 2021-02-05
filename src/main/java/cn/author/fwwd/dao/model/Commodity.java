@@ -1,14 +1,19 @@
 package cn.author.fwwd.dao.model;
 
+import cn.author.fwwd.common.PageBean;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
-public class Commodity {
+@Data
+public class Commodity extends PageBean {
     private Long id;
 
     private String title;
 
     private String seller;
+
+    private Long sellerId;
 
     private Integer status;
 
@@ -18,59 +23,8 @@ public class Commodity {
 
     private Date updateTime;
 
-    public Long getId() {
-        return id;
-    }
+    private Integer page;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Integer rows;
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
-    }
-
-    public String getSeller() {
-        return seller;
-    }
-
-    public void setSeller(String seller) {
-        this.seller = seller == null ? null : seller.trim();
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit == null ? null : unit.trim();
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }
