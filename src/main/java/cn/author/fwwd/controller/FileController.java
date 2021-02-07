@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
@@ -48,35 +49,35 @@ public class FileController {
         }
     }
     @GetMapping("getFileById")
-    public void getFileById(Long id, HttpServletResponse response){
-//        try {
-//            Attach attach = fileService.selectByPrimaryKey(id);
-//            if(null==attach){
-//                return;
-//            }
-//            String fileName = attach.getFileName();
-//            String extention = fileName.substring(fileName.lastIndexOf("."));
-//            if(null==attach || StringUtils.isBlank(attach.getUrl())|| StringUtils.isBlank(fileName)|| StringUtils.isBlank(extention)){
-//                return;
-//            }
-//            File file = new File(attach.getUrl());
+    public void getFileById(Long id, HttpServletRequest request, HttpServletResponse response){
+        try {
+            Attach attach = fileService.selectByPrimaryKey(id);
+            if(null==attach){
+                return;
+            }
+            String fileName = attach.getFileName();
+            String extention = fileName.substring(fileName.lastIndexOf("."));
+            if(null==attach || StringUtils.isBlank(attach.getUrl())|| StringUtils.isBlank(fileName)|| StringUtils.isBlank(extention)){
+                return;
+            }
+            File file = new File(attach.getUrl());
 //            String l=request.getRealPath("/")+"/"+url;
 //            String filename = file.getName();
-//            InputStream fis = new BufferedInputStream(new FileInputStream(file));
-//            byte[] buffer = new byte[fis.available()];
-//            fis.read(buffer);
-//            fis.close();
-//            response.reset();
-//            // 设置response的Header
-//            response.addHeader("Content-Length", "" + file.length());
-//            response.setContentType(FileContentTypeUtils.getContentType(extention));
-//
-//            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-//            toClient.write(buffer);
-//            toClient.flush();
-//            toClient.close();
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+            InputStream fis = new BufferedInputStream(new FileInputStream(file));
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            fis.close();
+            response.reset();
+            // 设置response的Header
+            response.addHeader("Content-Length", "" + file.length());
+            response.setContentType(FileContentTypeUtils.getContentType(extention));
+
+            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+            toClient.write(buffer);
+            toClient.flush();
+            toClient.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

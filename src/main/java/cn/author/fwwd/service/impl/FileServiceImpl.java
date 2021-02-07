@@ -46,6 +46,10 @@ public class FileServiceImpl implements FileService {
         if(StringUtils.isBlank(suffix)){
             throw new RuntimeException("附件格式非法，文件名称需带后缀，请重命名！");
         }
+        String filename = multifile.getOriginalFilename();
+        if(filename.length()>30){
+            throw new RuntimeException("文件名长度超过30，请重命名！");
+        }
         String dir = "D:\\upload";
         Long fileId = DateUtils.getSerialId(config.getServerId(), ServiceID.FILE.getCode());
         String fileName = fileId+"."+suffix;
@@ -57,7 +61,7 @@ public class FileServiceImpl implements FileService {
         attach.setUrl(fileUrl);
         byte status = 1;
         attach.setStatus(status);
-        attach.setFileName(multifile.getOriginalFilename());
+        attach.setFileName(filename);
 //        attach.setUploadBy(user.getUid());
         attachMapper.insertSelective(attach);
         return fileId;

@@ -5,7 +5,18 @@ package cn.author.fwwd.common;
 
 public class PageBean {
     private Integer page;
+    private Integer offSet;
     private Integer rows;
+
+    public Integer getOffSet() {
+        int offSet = this.getPage()*this.getRows()-this.getRows();
+        this.setOffSet(offSet);
+        return offSet;
+    }
+
+    public void setOffSet(Integer offSet) {
+        this.offSet = offSet;
+    }
 
     public Integer getPage() {
         if(null==this.page || this.page<1){ this.page=1;}

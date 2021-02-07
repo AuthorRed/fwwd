@@ -5,12 +5,19 @@ import cn.author.fwwd.dao.model.Commodity;
 import lombok.Data;
 
 
-import java.util.ArrayList;
+
+
 @Data
 public class CommodityVO {
     private Commodity commodity;
 
-    private ArrayList<Attach> attachList;
+    private Attach attach;
 
+    public CommodityVO() {
+    }
 
+    public CommodityVO(Commodity commodity, Attach attach) {
+        this.commodity = commodity;
+        this.attach = attach;
+    }
 }

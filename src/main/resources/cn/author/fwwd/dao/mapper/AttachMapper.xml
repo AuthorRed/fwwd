@@ -20,10 +20,18 @@
     UPLOAD_UID, CATEGORY
   </sql>
   <select id="selectByFid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  select
+  <include refid="Base_Column_List" />
+  from attach0
+  where FID = #{fid,jdbcType=BIGINT}
+</select>
+  <select id="selectFirstOneByFid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />
     from attach0
     where FID = #{fid,jdbcType=BIGINT}
+    order by id DESC
+    limit 1
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >

@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AttachMapper {
     List<Attach> selectByFid(Long id);
 
+    Attach selectFirstOneByFid(Long id);
+
     int deleteByPrimaryKey(Long id);
 
     int insert(Attach record);

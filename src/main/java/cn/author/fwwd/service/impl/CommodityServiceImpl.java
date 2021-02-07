@@ -2,18 +2,23 @@ package cn.author.fwwd.service.impl;
 
 import cn.author.fwwd.Utils.DateUtils;
 import cn.author.fwwd.config.PropertiesConfig;
+import cn.author.fwwd.dao.mapper.AttachMapper;
 import cn.author.fwwd.dao.mapper.CommodityMapper;
 import cn.author.fwwd.dao.mapper.UserMapper;
+import cn.author.fwwd.dao.model.Attach;
 import cn.author.fwwd.dao.model.Commodity;
 import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.enums.CommodityStatus;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.CommodityService;
+import cn.author.fwwd.vo.CommodityVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.attachment.AttachmentMarshaller;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,8 +33,10 @@ public class CommodityServiceImpl implements CommodityService {
     private UserMapper userMapper;
     @Autowired
     private PropertiesConfig config;
+    @Autowired
+    private AttachMapper attachMapper;
     @Override
-    public List<Commodity> pageList(Commodity commodity){
+    public List<CommodityVO> pageList(Commodity commodity){
         if(null==commodity.getStatus()){
             commodity.setStatus(CommodityStatus.ADDED.getCode());
         }
@@ -44,8 +51,15 @@ public class CommodityServiceImpl implements CommodityService {
         //Integer count = commodityMapper.count(commodity);
         log.info("list start");
         List<Commodity> list = commodityMapper.list(commodity);
+        ArrayList<CommodityVO> commodityVOList = new ArrayList<>(list.size());
+
+        for (Commodity comm : list) {
+            Attach attach = attachMapper.selectFirstOneByFid(comm.getId());
+            CommodityVO commodityVO = new CommodityVO(comm, attach);
+            commodityVOList.add(commodityVO);
+        }
         log.info("list end");
-        return list;
+        return commodityVOList;
     }
     @Override
     public int insertInBatch(Integer num,Integer page){

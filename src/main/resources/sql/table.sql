@@ -31,6 +31,7 @@ CREATE TABLE `attach0` (
    PRIMARY KEY (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
+drop table commodity0;
 CREATE TABLE `commodity0` (
    `id` bigint(20) NOT NULL,
    `title` varchar(128) DEFAULT NULL,

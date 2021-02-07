@@ -34,8 +34,8 @@
     <if test="status != null" >
     and status = #{status,jdbcType=INTEGER}
     </if>
-    ORDER BY id DESC
-    LIMIT #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+    ORDER BY id desc
+    LIMIT #{offSet,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
   </select>
   <select id="count" resultType="int">
     select
