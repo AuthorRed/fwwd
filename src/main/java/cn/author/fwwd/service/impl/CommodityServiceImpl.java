@@ -11,12 +11,12 @@ import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.enums.CommodityStatus;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.CommodityService;
+import cn.author.fwwd.service.SearchService;
 import cn.author.fwwd.vo.CommodityVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.attachment.AttachmentMarshaller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +35,8 @@ public class CommodityServiceImpl implements CommodityService {
     private PropertiesConfig config;
     @Autowired
     private AttachMapper attachMapper;
+    @Autowired
+    private SearchService searchService;
     @Override
     public List<CommodityVO> pageList(Commodity commodity){
         if(null==commodity.getStatus()){
@@ -101,6 +103,7 @@ public class CommodityServiceImpl implements CommodityService {
             User user = userMapper.selectByUID(record.getSeller());
             record.setSellerId(user.getId());
         }
+        searchService.addCommodity2ES(record);
         return commodityMapper.insertSelective(record);
     }
 

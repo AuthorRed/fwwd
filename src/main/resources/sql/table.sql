@@ -45,3 +45,36 @@ CREATE TABLE `commodity0` (
    KEY `price_index` (`price`),
    KEY `seller_id_index` (`seller_id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+
+#Elastic search create index DSL
+PUT /commodity
+{
+	"settings": {
+		"number_of_shards": 2,
+		"number_of_replicas": 2
+	},
+	"mappings": {
+		"properties": {
+			"id": {
+				"type": "long"
+			},
+			"title": {
+				"type": "text",
+				"analyzer": "ik_smart",
+				"search_analyzer": "ik_smart"
+			},
+			"img_url": {
+				"type": "keyword"
+			},
+			"img_id": {
+				"type": "keyword"
+			},
+			"seller": {
+				"type": "keyword"
+			},
+			"price": {
+				"type": "double"
+			}
+		}
+	}
+}
