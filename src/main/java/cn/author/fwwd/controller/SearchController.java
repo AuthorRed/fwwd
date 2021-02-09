@@ -1,5 +1,6 @@
 package cn.author.fwwd.controller;
 
+import cn.author.fwwd.common.PageBean;
 import cn.author.fwwd.common.ResultMsg;
 import cn.author.fwwd.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,10 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
     @RequestMapping("index")
-    public ResultMsg index(String keyWord){
+    public ResultMsg index(String keyWord, PageBean pageBean){
         ResultMsg resultMsg = null;
         try {
-            List<Map<String, Object>> list = searchService.homePageSearch(keyWord);
+            List<Map<String, Object>> list = searchService.homePageSearch(keyWord,pageBean);
             resultMsg = ResultMsg.success();
             resultMsg.getExtenal().put("list",list);
         }catch (Exception e){

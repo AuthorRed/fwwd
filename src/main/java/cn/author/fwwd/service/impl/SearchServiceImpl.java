@@ -1,5 +1,6 @@
 package cn.author.fwwd.service.impl;
 
+import cn.author.fwwd.common.PageBean;
 import cn.author.fwwd.dao.mapper.AttachMapper;
 import cn.author.fwwd.dao.model.Attach;
 import cn.author.fwwd.dao.model.Commodity;
@@ -31,10 +32,12 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private AttachMapper attachMapper;
     @Override
-    public List<Map<String, Object>> homePageSearch(String keyWord) throws Exception {
+    public List<Map<String, Object>> homePageSearch(String keyWord, PageBean pageBean) throws Exception {
         SearchRequest searchRequest = new SearchRequest("commodity");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(new MatchQueryBuilder("title", keyWord));
+        searchSourceBuilder.from(pageBean.getOffSet());
+        searchSourceBuilder.size(pageBean.getRows());
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] hits = response.getHits().getHits();
