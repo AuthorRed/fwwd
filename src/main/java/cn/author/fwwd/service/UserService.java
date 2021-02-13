@@ -3,9 +3,12 @@ package cn.author.fwwd.service;
 import cn.author.fwwd.dao.model.User;
 
 public interface UserService {
-    public int countUID(String uid);
 
-    public User usernamePwdLogin(String username, String pwd);
+    User loadUserByUsername(String uid);
 
-    public User register(User user);
+    int countUID(String uid);
+
+    User usernamePwdLogin(String username, String pwd);
+
+    User register(User user);
 }

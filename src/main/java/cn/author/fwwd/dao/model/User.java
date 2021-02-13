@@ -29,6 +29,12 @@ public class User {
 
     private String headImg;
 
+    private String token;
+
+    private Long loginTime;
+
+    private Long expireTime;
+
     public Long getId() {
         return id;
     }
@@ -131,5 +137,29 @@ public class User {
 
     public void setHeadImg(String headImg) {
         this.headImg = headImg == null ? null : headImg.trim();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Long getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Long loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public Long getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Long expireTime) {
+        this.expireTime = expireTime;
     }
 }

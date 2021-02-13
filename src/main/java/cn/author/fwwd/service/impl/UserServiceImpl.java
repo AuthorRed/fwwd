@@ -22,6 +22,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private PropertiesConfig config;
+    @Override
+    public User loadUserByUsername(String uid){
+        return userMapper.selectByUID(uid);
+    }
 
     @Override
     public int countUID(String uid) {
@@ -38,14 +42,7 @@ public class UserServiceImpl implements UserService {
         if(null == user || null ==  user.getPwd()){
             return null;
         }
-
         String encodingPWD = encodingPWD(pwd, user.getSalt());
-
-//        String raw = pwd+user.getSalt();
-//        if(StringUtils.isBlank(raw)){
-//            return null;
-//        }
-//        String md5Password = DigestUtils.md5DigestAsHex(raw.getBytes());
         if(null!=encodingPWD&&encodingPWD.equalsIgnoreCase(user.getPwd())){
             user.setSalt(null);
             return user;
