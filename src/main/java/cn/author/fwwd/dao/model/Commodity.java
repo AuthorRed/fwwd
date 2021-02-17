@@ -23,6 +23,8 @@ public class Commodity extends PageBean {
 
     private Date updateTime;
 
+    private String category;
+
 
 
 }

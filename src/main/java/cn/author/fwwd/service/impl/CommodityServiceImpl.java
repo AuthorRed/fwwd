@@ -7,13 +7,16 @@ import cn.author.fwwd.dao.mapper.CommodityMapper;
 import cn.author.fwwd.dao.mapper.UserMapper;
 import cn.author.fwwd.dao.model.Attach;
 import cn.author.fwwd.dao.model.Commodity;
+import cn.author.fwwd.dao.model.SellerCategory;
 import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.enums.CommodityStatus;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.CommodityService;
 import cn.author.fwwd.service.SearchService;
+import cn.author.fwwd.service.SellerCategoryService;
 import cn.author.fwwd.vo.CommodityVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,8 @@ public class CommodityServiceImpl implements CommodityService {
     private AttachMapper attachMapper;
     @Autowired
     private SearchService searchService;
+    @Autowired
+    private SellerCategoryService SellerCategoryService;
     @Override
     public List<CommodityVO> pageList(Commodity commodity){
         if(null==commodity.getStatus()){
@@ -102,6 +107,15 @@ public class CommodityServiceImpl implements CommodityService {
         if(null==record.getSellerId()){
             User user = userMapper.selectByUID(record.getSeller());
             record.setSellerId(user.getId());
+        }
+        if(StringUtils.isNotBlank(record.getCategory())){
+            record.setCategory(record.getCategory().trim());
+            SellerCategory category = new SellerCategory();
+            category.setId(DateUtils.getSerialId(config.getServerId(),ServiceID.SELLER_CATEGORY.getCode()));
+            category.setCategroy(record.getCategory());
+            category.setSellerId(record.getSellerId());
+            category.setSellerUid(record.getSeller());
+            SellerCategoryService.saveSellerCategory(category);
         }
         searchService.addCommodity2ES(record);
         return commodityMapper.insertSelective(record);

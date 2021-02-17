@@ -41,7 +41,7 @@ public class FileServiceImpl implements FileService {
         Attach attach = new Attach();
         attach.setCategory(category);
         attach.setFid(fid);
-        attach.setFidHash(HashUtils.getIntHash(String.valueOf(fid)));
+        attach.setFidHash(HashUtils.getIntHash(String.valueOf(fid),ServiceID.FILE));
         String suffix = multifile.getOriginalFilename().substring(multifile.getOriginalFilename().lastIndexOf(".")+1);
         if(StringUtils.isBlank(suffix)){
             throw new RuntimeException("附件格式非法，文件名称需带后缀，请重命名！");

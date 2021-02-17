@@ -3,15 +3,22 @@ package cn.author.fwwd.enums;
 
 
 public enum ServiceID {
-    FILE("FILE",11l),
-    COMMODITY("COMMODITY",12l),
-    USER("USER",31l);
+    FILE("FILE",11l,1),
+    COMMODITY("COMMODITY",12l,1),
+    USER("USER",31l,1),
+    ORDER("ORDER",51l,1),
+    SELLER_ORDER("SELLER_ORDER",52l,1),
+    BUYER_ORDER("BUYER_ORDER",53l,1),
+    SELLER_CATEGORY("SELLER_CATEGORY",61l,1);
+
     private String name;
     private long code;
+    private Integer tableCount;
 
-    ServiceID(String file, long l) {
+    ServiceID(String file, long l,Integer tableCount) {
         this.name = file;
         this.code = l;
+        this.tableCount = tableCount;
     }
 
     public String getName() {
@@ -28,5 +35,13 @@ public enum ServiceID {
 
     public void setCode(long code) {
         this.code = code;
+    }
+
+    public Integer getTableCount() {
+        return tableCount;
+    }
+
+    public void setTableCount(Integer tableCount) {
+        this.tableCount = tableCount;
     }
 }

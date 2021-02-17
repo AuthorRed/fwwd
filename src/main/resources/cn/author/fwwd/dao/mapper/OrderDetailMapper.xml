@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.author.fwwd.dao.mapper.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="cn.author.fwwd.dao.model.OrderDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="commodity_id" property="commodityId" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="buyer_pay" property="buyerPay" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="commodity_desc" property="commodityDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_id, commodity_id, amount, buyer_pay, remark, commodity_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail0
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from order_detail0
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
+    insert into order_detail0 (id, order_id, commodity_id, 
+      amount, buyer_pay, remark, 
+      commodity_desc)
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{commodityId,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=INTEGER}, #{buyerPay,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+      #{commodityDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
+    insert into order_detail0
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="commodityId != null" >
+        commodity_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="buyerPay != null" >
+        buyer_pay,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="commodityDesc != null" >
+        commodity_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="commodityId != null" >
+        #{commodityId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="buyerPay != null" >
+        #{buyerPay,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityDesc != null" >
+        #{commodityDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
+    update order_detail0
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="commodityId != null" >
+        commodity_id = #{commodityId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="buyerPay != null" >
+        buyer_pay = #{buyerPay,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityDesc != null" >
+        commodity_desc = #{commodityDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
+    update order_detail0
+    set order_id = #{orderId,jdbcType=BIGINT},
+      commodity_id = #{commodityId,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
+      buyer_pay = #{buyerPay,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      commodity_desc = #{commodityDesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

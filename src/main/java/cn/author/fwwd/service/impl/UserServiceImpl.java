@@ -1,6 +1,7 @@
 package cn.author.fwwd.service.impl;
 
 import cn.author.fwwd.Utils.DateUtils;
+import cn.author.fwwd.Utils.HashUtils;
 import cn.author.fwwd.config.PropertiesConfig;
 import cn.author.fwwd.dao.mapper.UserMapper;
 import cn.author.fwwd.dao.model.User;
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
         return DigestUtils.md5DigestAsHex(raw.getBytes());
     }
     @Override
-    public User register(User user) {
+    public User register(User user) throws Exception {
         if(StringUtils.isBlank(user.getUid())||StringUtils.isBlank(user.getUid())){
             throw new RuntimeException("用户名和密码不能为空!");
         }
@@ -73,6 +74,7 @@ public class UserServiceImpl implements UserService {
         user.setSalt(salt);
         user.setRole("admin");
         user.setPwd(encodingPWD(user.getPwd(),salt));
+        user.setHash(HashUtils.getUidHash(user.getUid()));
         userMapper.insertSelective(user);
         user.setSalt(null);
         user.setPwd(null);

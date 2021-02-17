@@ -31,12 +31,13 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="commodity0" domainObjectName="Commodity" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
-               enableUpdateByExample="false">
-        </table>
-        <!--<table tableName="attach0" domainObjectName="Attach" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
-               enableUpdateByExample="false">
-        </table>-->
-
+        <!--<table tableName="seller_order0" domainObjectName="SellerOrder" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+               enableUpdateByExample="false"></table>-->
+        <!--<table tableName="buyer_order0" domainObjectName="BuyerOrder" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+               enableUpdateByExample="false"></table>-->
+        <!--<table tableName="seller_category0" domainObjectName="SellerCategory" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+               enableUpdateByExample="false"></table>-->
+        <!--<table tableName="order_detail0" domainObjectName="OrderDetail" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+               enableUpdateByExample="false"></table>-->
     </context>
 </generatorConfiguration>

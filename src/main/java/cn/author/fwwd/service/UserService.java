@@ -10,5 +10,5 @@ public interface UserService {
 
     User usernamePwdLogin(String username, String pwd);
 
-    User register(User user);
+    User register(User user)  throws Exception ;
 }

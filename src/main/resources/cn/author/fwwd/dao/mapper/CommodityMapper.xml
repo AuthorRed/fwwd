@@ -10,19 +10,20 @@
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, seller,seller_id, status, price, unit, update_time
+    id, title, seller,seller_id, status, price, unit, update_time,category
   </sql>
   <insert id="insertInBatch" parameterType="java.util.List" >
     insert into commodity0 (id, title, seller,seller_id,
       status, price, unit,
-      update_time)
+      update_time,category)
     values
       <foreach collection="list" item="item" separator=",">
         (#{item.id,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.seller,jdbcType=VARCHAR}, #{item.sellerId,jdbcType=BIGINT},
         #{item.status,jdbcType=INTEGER}, #{item.price,jdbcType=DECIMAL}, #{item.unit,jdbcType=VARCHAR},
-        #{item.updateTime,jdbcType=TIMESTAMP})
+        #{item.updateTime,jdbcType=TIMESTAMP}, #{item.category,jdbcType=VARCHAR})
 
       </foreach>
   </insert>
@@ -33,6 +34,9 @@
     where seller_id = #{sellerId,jdbcType=BIGINT}
     <if test="status != null" >
     and status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="category != null" >
+    and category = #{category,jdbcType=VARCHAR}
     </if>
     ORDER BY id desc
     LIMIT #{offSet,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
@@ -56,14 +60,7 @@
     delete from commodity0
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.author.fwwd.dao.model.Commodity" >
-    insert into commodity0 (id, title, seller, sellerId,
-      status, price, unit, 
-      update_time)
-    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{seller,jdbcType=VARCHAR}, #{sellerId,jdbcType=BIGINT},
-      #{status,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
+
   <insert id="insertSelective" parameterType="cn.author.fwwd.dao.model.Commodity" >
     insert into commodity0
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -91,6 +88,9 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="category != null" >
+        category,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -116,6 +116,9 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -143,18 +146,11 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.author.fwwd.dao.model.Commodity" >
-    update commodity0
-    set title = #{title,jdbcType=VARCHAR},
-      seller = #{seller,jdbcType=VARCHAR},
-      seller_id = #{sellerId,jdbcType=BIGINT},
-      status = #{status,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
-      unit = #{unit,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
 </mapper>

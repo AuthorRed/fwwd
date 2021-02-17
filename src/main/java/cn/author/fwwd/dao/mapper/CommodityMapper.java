@@ -15,7 +15,7 @@ public interface CommodityMapper {
 
     int deleteByPrimaryKey(Long id);
 
-    int insert(Commodity record);
+
 
     int insertSelective(Commodity record);
 
@@ -23,5 +23,5 @@ public interface CommodityMapper {
 
     int updateByPrimaryKeySelective(Commodity record);
 
-    int updateByPrimaryKey(Commodity record);
+
 }

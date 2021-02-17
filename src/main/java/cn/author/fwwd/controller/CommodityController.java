@@ -29,7 +29,7 @@ public class CommodityController {
     @Autowired
     private PropertiesConfig config;
     @GetMapping("list")
-    public ResultMsg list(Commodity commodity,Integer page,Integer rows){
+    public ResultMsg list(Commodity commodity){
         ResultMsg resultMsg = null;
         try {
             List<CommodityVO> list  = commodityService.pageList(commodity);
