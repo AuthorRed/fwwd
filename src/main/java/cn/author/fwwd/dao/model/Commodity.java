@@ -25,6 +25,8 @@ public class Commodity extends PageBean {
 
     private String category;
 
+    private Long headImg;
+
 
 
 }

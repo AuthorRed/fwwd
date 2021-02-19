@@ -1,12 +1,11 @@
 package cn.author.fwwd.service;
 
 import cn.author.fwwd.dao.model.Commodity;
-import cn.author.fwwd.vo.CommodityVO;
 
 import java.util.List;
 
 public interface CommodityService {
-    public List<CommodityVO> pageList(Commodity commodity);
+    List<Commodity> pageList(Commodity commodity);
 
     int insertInBatch(Integer num,Integer page);
 

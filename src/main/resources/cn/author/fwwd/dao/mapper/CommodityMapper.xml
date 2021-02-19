@@ -11,19 +11,20 @@
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="head_img" property="headImg" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, seller,seller_id, status, price, unit, update_time,category
+    id, title, seller,seller_id, status, price, unit, update_time,category,head_img
   </sql>
   <insert id="insertInBatch" parameterType="java.util.List" >
     insert into commodity0 (id, title, seller,seller_id,
       status, price, unit,
-      update_time,category)
+      update_time,category,head_img)
     values
       <foreach collection="list" item="item" separator=",">
         (#{item.id,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.seller,jdbcType=VARCHAR}, #{item.sellerId,jdbcType=BIGINT},
         #{item.status,jdbcType=INTEGER}, #{item.price,jdbcType=DECIMAL}, #{item.unit,jdbcType=VARCHAR},
-        #{item.updateTime,jdbcType=TIMESTAMP}, #{item.category,jdbcType=VARCHAR})
+        #{item.updateTime,jdbcType=TIMESTAMP}, #{item.category,jdbcType=VARCHAR}), #{item.headImg,jdbcType=BIGINT})
 
       </foreach>
   </insert>
@@ -91,6 +92,9 @@
       <if test="category != null" >
         category,
       </if>
+      <if test="headImg != null" >
+        head_img,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -120,6 +124,9 @@
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
       </if>
+      <if test="headImg != null" >
+        #{headImg,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.author.fwwd.dao.model.Commodity" >
@@ -148,6 +155,9 @@
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null" >
+        head_img = #{headImg,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}

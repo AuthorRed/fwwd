@@ -33,18 +33,19 @@ CREATE TABLE `attach0` (
 
 drop table commodity0;
 CREATE TABLE `commodity0` (
-  `id` bigint(20) NOT NULL,
-  `title` varchar(128) DEFAULT NULL,
-  `seller` varchar(32) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `price` decimal(8,2) DEFAULT NULL,
-  `unit` varchar(16) DEFAULT NULL,
-  `update_time` timestamp NULL DEFAULT NULL,
-  `category` varchar(16) DEFAULT NULL,
-  `seller_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `price_index` (`price`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+   `id` bigint(20) NOT NULL,
+   `title` varchar(128) DEFAULT NULL,
+   `seller` varchar(32) DEFAULT NULL,
+   `status` int(11) DEFAULT NULL,
+   `price` decimal(8,2) DEFAULT NULL,
+   `unit` varchar(16) DEFAULT NULL,
+   `update_time` timestamp NULL DEFAULT NULL,
+   `category` varchar(16) DEFAULT NULL,
+   `seller_id` bigint(20) DEFAULT NULL,
+   `head_img` bigint(20) DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   KEY `price_index` (`price`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
 
 CREATE TABLE `order0` (

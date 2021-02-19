@@ -14,14 +14,12 @@ import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.CommodityService;
 import cn.author.fwwd.service.SearchService;
 import cn.author.fwwd.service.SellerCategoryService;
-import cn.author.fwwd.vo.CommodityVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +41,7 @@ public class CommodityServiceImpl implements CommodityService {
     @Autowired
     private SellerCategoryService SellerCategoryService;
     @Override
-    public List<CommodityVO> pageList(Commodity commodity){
+    public List<Commodity> pageList(Commodity commodity){
         if(null==commodity.getStatus()){
             commodity.setStatus(CommodityStatus.ADDED.getCode());
         }
@@ -58,15 +56,15 @@ public class CommodityServiceImpl implements CommodityService {
         //Integer count = commodityMapper.count(commodity);
         log.info("list start");
         List<Commodity> list = commodityMapper.list(commodity);
-        ArrayList<CommodityVO> commodityVOList = new ArrayList<>(list.size());
-
-        for (Commodity comm : list) {
-            Attach attach = attachMapper.selectFirstOneByFid(comm.getId());
-            CommodityVO commodityVO = new CommodityVO(comm, attach);
-            commodityVOList.add(commodityVO);
-        }
-        log.info("list end");
-        return commodityVOList;
+//        ArrayList<CommodityVO> commodityVOList = new ArrayList<>(list.size());
+//
+//        for (Commodity comm : list) {
+//            Attach attach = attachMapper.selectFirstOneByFid(comm.getId());
+//            CommodityVO commodityVO = new CommodityVO(comm, attach);
+//            commodityVOList.add(commodityVO);
+//        }
+//        log.info("list end");
+        return list;
     }
     @Override
     public int insertInBatch(Integer num,Integer page){
@@ -117,6 +115,8 @@ public class CommodityServiceImpl implements CommodityService {
             category.setSellerUid(record.getSeller());
             SellerCategoryService.saveSellerCategory(category);
         }
+        Attach attach = attachMapper.selectFirstOneByFid(record.getId());
+        record.setHeadImg(attach.getId());
         searchService.addCommodity2ES(record);
         return commodityMapper.insertSelective(record);
     }

@@ -32,7 +32,7 @@ public class CommodityController {
     public ResultMsg list(Commodity commodity){
         ResultMsg resultMsg = null;
         try {
-            List<CommodityVO> list  = commodityService.pageList(commodity);
+            List<Commodity> list  = commodityService.pageList(commodity);
             resultMsg = ResultMsg.success();
             resultMsg.getExtenal().put("list",list);
         }catch (Exception e){
