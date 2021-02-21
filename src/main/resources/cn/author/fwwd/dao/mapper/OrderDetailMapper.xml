@@ -5,13 +5,13 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="order_id" property="orderId" jdbcType="BIGINT" />
     <result column="commodity_id" property="commodityId" jdbcType="VARCHAR" />
-    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
     <result column="buyer_pay" property="buyerPay" jdbcType="DECIMAL" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="commodity_desc" property="commodityDesc" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, commodity_id, amount, buyer_pay, remark, commodity_desc
+    id, order_id, commodity_id, num, buyer_pay, remark, commodity_desc
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -23,12 +23,24 @@
     delete from order_detail0
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <insert id="insertInBatch"  parameterType="java.util.List" >
+    insert into order_detail0 (id, order_id, commodity_id,
+    num, remark,
+    commodity_desc)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id,jdbcType=BIGINT}, #{item.orderId,jdbcType=BIGINT}, #{item.commodityId,jdbcType=VARCHAR},
+      #{item.num,jdbcType=INTEGER},#{item.remark,jdbcType=VARCHAR},
+      #{item.commodityDesc,jdbcType=VARCHAR})
+    </foreach>
+
+  </insert>
   <insert id="insert" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
-    insert into order_detail0 (id, order_id, commodity_id, 
-      amount, buyer_pay, remark, 
+    insert into order_detail0 (id, order_id, commodity_id,
+      num, buyer_pay, remark,
       commodity_desc)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{commodityId,jdbcType=VARCHAR}, 
-      #{amount,jdbcType=INTEGER}, #{buyerPay,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{commodityId,jdbcType=VARCHAR},
+      #{num,jdbcType=INTEGER}, #{buyerPay,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR},
       #{commodityDesc,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
@@ -43,8 +55,8 @@
       <if test="commodityId != null" >
         commodity_id,
       </if>
-      <if test="amount != null" >
-        amount,
+      <if test="num != null" >
+        num,
       </if>
       <if test="buyerPay != null" >
         buyer_pay,
@@ -66,8 +78,8 @@
       <if test="commodityId != null" >
         #{commodityId,jdbcType=VARCHAR},
       </if>
-      <if test="amount != null" >
-        #{amount,jdbcType=INTEGER},
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
       </if>
       <if test="buyerPay != null" >
         #{buyerPay,jdbcType=DECIMAL},
@@ -89,8 +101,8 @@
       <if test="commodityId != null" >
         commodity_id = #{commodityId,jdbcType=VARCHAR},
       </if>
-      <if test="amount != null" >
-        amount = #{amount,jdbcType=INTEGER},
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
       </if>
       <if test="buyerPay != null" >
         buyer_pay = #{buyerPay,jdbcType=DECIMAL},
@@ -108,7 +120,7 @@
     update order_detail0
     set order_id = #{orderId,jdbcType=BIGINT},
       commodity_id = #{commodityId,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
       buyer_pay = #{buyerPay,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
       commodity_desc = #{commodityDesc,jdbcType=VARCHAR}

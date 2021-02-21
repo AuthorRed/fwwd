@@ -14,5 +14,5 @@ public interface OrderService {
 
     void updateOrderStatus(String token,Long id,Integer status);
 
-    List<Order> getPageList(String token, Integer status, PageBean pageBean);
+    List<Order> getPageList(String orderType, String token, Integer status, PageBean pageBean);
 }

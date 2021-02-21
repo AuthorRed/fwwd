@@ -3,14 +3,8 @@ package cn.author.fwwd.service.impl;
 import cn.author.fwwd.Utils.DateUtils;
 import cn.author.fwwd.common.PageBean;
 import cn.author.fwwd.config.PropertiesConfig;
-import cn.author.fwwd.dao.mapper.BuyerOrderMapper;
-import cn.author.fwwd.dao.mapper.OrderMapper;
-import cn.author.fwwd.dao.mapper.SellerOrderMapper;
-import cn.author.fwwd.dao.mapper.UserMapper;
-import cn.author.fwwd.dao.model.BuyerOrder;
-import cn.author.fwwd.dao.model.Order;
-import cn.author.fwwd.dao.model.SellerOrder;
-import cn.author.fwwd.dao.model.User;
+import cn.author.fwwd.dao.mapper.*;
+import cn.author.fwwd.dao.model.*;
 import cn.author.fwwd.enums.OrderStatus;
 import cn.author.fwwd.enums.RoleType;
 import cn.author.fwwd.enums.ServiceID;
@@ -37,6 +31,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
+    private OrderDetailMapper orderDetailMapper;
+    @Autowired
     private BuyerOrderMapper buyerOrderMapper;
     @Autowired
     private SellerOrderMapper sellerOrderMapper;
@@ -58,9 +54,16 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateTime(now);
         order.setStatus(orderStatus);
 
+        List<OrderDetail> list = order.getList();
+        for (OrderDetail detail : list) {
+            detail.setId(DateUtils.getSerialId(config.getServerId(),ServiceID.ORDER_DETAIL.getCode()));
+            detail.setOrderId(id);
+        }
+        orderDetailMapper.insertInBatch(list);
+
         SellerOrder sellerOrder = new SellerOrder(DateUtils.getSerialId(config.getServerId(), ServiceID.SELLER_ORDER.getCode()), id, order.getSellerUid(), orderStatus);
         sellerOrder.setSellerId(userService.loadUserByUsername(order.getSellerUid()).getId());
-        BuyerOrder buyerOrder = new BuyerOrder(DateUtils.getSerialId(config.getServerId(), ServiceID.SELLER_ORDER.getCode()), id, order.getBuyerUid(), orderStatus);
+        BuyerOrder buyerOrder = new BuyerOrder(DateUtils.getSerialId(config.getServerId(), ServiceID.BUYER_ORDER.getCode()), id, order.getBuyerUid(), orderStatus);
         buyerOrder.setBuyerId(userService.loadUserByUsername(order.getBuyerUid()).getId());
         orderMapper.insertSelective(order);
         sellerOrderMapper.insertSelective(sellerOrder);
@@ -106,20 +109,25 @@ public class OrderServiceImpl implements OrderService {
 
     }
     @Override
-    public List<Order> getPageList(String token, Integer status, PageBean pageBean){
+    public List<Order> getPageList(String orderType,String token, Integer status, PageBean pageBean){
         if(StringUtils.isBlank(token)){
             throw new RuntimeException("订单查询请登录!");
         }
         User loginUser = tokenService.getLoginUser(token);
+        if(null==loginUser){
+            throw new RuntimeException("用户会话失效，请重新登录!");
+        }
         List<Long> orderIdList = null;
-        if(RoleType.SELLER.getCode().equalsIgnoreCase(loginUser.getRole())){
+        if(RoleType.SELLER.getCode().equalsIgnoreCase(orderType)){
             SellerOrder sellerOrder = new SellerOrder();
+            sellerOrder.setSellerUid(loginUser.getUid());
             sellerOrder.setPage(pageBean.getPage());
             sellerOrder.setRows(pageBean.getRows());
             sellerOrder.setStatus(status);
             orderIdList = sellerOrderMapper.list(sellerOrder);
         }else{
             BuyerOrder buyerOrder = new BuyerOrder();
+            buyerOrder.setBuyerUid(loginUser.getUid());
             buyerOrder.setPage(pageBean.getPage());
             buyerOrder.setRows(pageBean.getRows());
             buyerOrder.setStatus(status);
@@ -137,21 +145,24 @@ public class OrderServiceImpl implements OrderService {
     }
     private void validateOrder(String token,Order order){
         User loginUser = tokenService.getLoginUser(token);
-        if(null==loginUser || !RoleType.BUYER.getCode().equalsIgnoreCase(loginUser.getRole())){
-            throw new RuntimeException("商家账号不能下单!");
-        }
+//        if(null==loginUser || !RoleType.BUYER.getCode().equalsIgnoreCase(loginUser.getRole())){
+//            throw new RuntimeException("商家账号不能下单!");
+//        }
         if(order.getAmount()<1){
             throw new RuntimeException("订单数量不能小于'1'");
         }
-        if(null==order.getBuyerAddressId()||order.getBuyerAddressId()<1){
-            throw new RuntimeException("订单缺少用户收货地址");
+        if(order.getList().size()<1){
+            throw new RuntimeException("订单详情数量不能小于'1'");
         }
+//        if(null==order.getBuyerAddressId()||order.getBuyerAddressId()<1){
+//            throw new RuntimeException("订单缺少用户收货地址");
+//        }
         if(StringUtils.isBlank(order.getBuyerUid())){
             throw new RuntimeException("订单缺少用户信息，请重新登录下单");
         }
-        if(null==order.getCommodityId()||order.getCommodityId()<1){
-            throw new RuntimeException("订单缺少商品信息");
-        }
+//        if(null==order.getCommodityId()||order.getCommodityId()<1){
+//            throw new RuntimeException("订单缺少商品信息");
+//        }
         if(StringUtils.isBlank(order.getSellerUid())){
             throw new RuntimeException("订单缺少商户信息");
         }

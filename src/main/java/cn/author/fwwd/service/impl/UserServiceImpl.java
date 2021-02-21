@@ -5,6 +5,7 @@ import cn.author.fwwd.Utils.HashUtils;
 import cn.author.fwwd.config.PropertiesConfig;
 import cn.author.fwwd.dao.mapper.UserMapper;
 import cn.author.fwwd.dao.model.User;
+import cn.author.fwwd.enums.RoleType;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
         String uuid = UUID.randomUUID().toString();
         String salt = uuid.replaceAll("-", "");
         user.setSalt(salt);
-        user.setRole("admin");
+        user.setRole(StringUtils.isBlank(user.getRole())? RoleType.BUYER.getCode():user.getRole());
         user.setPwd(encodingPWD(user.getPwd(),salt));
         user.setHash(HashUtils.getUidHash(user.getUid()));
         userMapper.insertSelective(user);

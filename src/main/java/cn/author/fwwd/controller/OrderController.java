@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,10 +42,10 @@ public class OrderController {
         return resultMsg;
     }
     @RequestMapping("list")
-    public ResultMsg list(String token, Integer status, PageBean pageBean){
+    public ResultMsg list(String orderType,String token, Integer status, PageBean pageBean){
         ResultMsg resultMsg = null;
         try {
-            List<Order> list = orderService.getPageList(token, status, pageBean);
+            List<Order> list = orderService.getPageList(orderType,token, status, pageBean);
             resultMsg = ResultMsg.success();
             resultMsg.getExtenal().put("list",list);
         }catch (Exception e){
@@ -55,13 +56,13 @@ public class OrderController {
     }
 
     @PostMapping("save")
-    public ResultMsg save(String token,Order order){
+    public ResultMsg save(@RequestBody Order order){
         ResultMsg resultMsg = null;
         try {
-            orderService.saveOrder(token,order);
+            orderService.saveOrder(order.getToken(),order);
             resultMsg = ResultMsg.success();
         }catch (Exception e){
-            log.error("注册失败:",e);
+            log.error("下单失败:",e);
             return ResultMsg.error(e.getMessage());
         }
         return resultMsg;

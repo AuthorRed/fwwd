@@ -97,12 +97,13 @@ CREATE TABLE `order_detail0` (
   `id` bigint(20) NOT NULL,
   `order_id` bigint(20) DEFAULT NULL,
   `commodity_id` varchar(64) DEFAULT NULL,
-  `amount` int(11) DEFAULT NULL,
+  `num` int(11) DEFAULT NULL,
   `buyer_pay` decimal(8,2) DEFAULT NULL,
   `remark` varchar(128) DEFAULT NULL,
   `commodity_desc` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 #Elastic search create index DSL
 PUT /commodity

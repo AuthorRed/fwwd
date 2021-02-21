@@ -86,7 +86,7 @@
   </update>
 
   <select id="list" resultType="long" parameterType="cn.author.fwwd.dao.model.SellerOrder"  >
-    select ID
+    select ORDER_ID
     from seller_order0
     where seller_uid = #{sellerUid,jdbcType=VARCHAR}
     <if test="status != null" >

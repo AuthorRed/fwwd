@@ -6,7 +6,7 @@ public enum OrderStatus {
     PLACED("CLIENT_PLACE_ORDER",10),
     ACCEPT("SELLER_ACCEPT",20),
     PAID("CLIENT_PAID",30),
-    FINISHED("SELLER_PAID",40),
+    FINISHED("FINISHED",40),
     COMMENTED("CLIENT_COMMENTED",50);
     private String name;
     private Integer code;
