@@ -7,7 +7,9 @@ public enum OrderStatus {
     ACCEPT("SELLER_ACCEPT",20),
     PAID("CLIENT_PAID",30),
     FINISHED("FINISHED",40),
-    COMMENTED("CLIENT_COMMENTED",50);
+    COMMENTED("CLIENT_COMMENTED",50),
+    //问题单
+    PROBLEM("PROBLEM",60);
     private String name;
     private Integer code;
 
