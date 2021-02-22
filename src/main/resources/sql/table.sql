@@ -70,20 +70,22 @@ CREATE TABLE `order0` (
 
 
 CREATE TABLE `seller_order0` (
-  `id` bigint(20) NOT NULL,
-  `order_id` bigint(20) DEFAULT NULL,
-  `seller_uid` varchar(32) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+   `id` bigint(20) NOT NULL,
+   `order_id` bigint(20) DEFAULT NULL,
+   `seller_uid` varchar(32) DEFAULT NULL,
+   `status` int(11) DEFAULT NULL,
+   `seller_id` bigint(20) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
 CREATE TABLE `buyer_order0` (
-  `id` bigint(20) NOT NULL,
-  `order_id` bigint(20) DEFAULT NULL,
-  `buyer_uid` varchar(32) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+   `id` bigint(20) NOT NULL,
+   `order_id` bigint(20) DEFAULT NULL,
+   `buyer_uid` varchar(32) DEFAULT NULL,
+   `status` int(11) DEFAULT NULL,
+   `buyer_id` bigint(20) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
 CREATE TABLE `seller_category0` (
   `id` bigint(20) NOT NULL,
