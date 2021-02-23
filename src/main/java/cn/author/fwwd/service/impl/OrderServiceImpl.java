@@ -85,12 +85,26 @@ public class OrderServiceImpl implements OrderService {
         }
         User loginUser = tokenService.getLoginUser(token);
         Order orderDB = getOrderById(id);
-//        if(null ==orderDB ||null ==loginUser
-//                ||!orderDB.getSellerUid().equalsIgnoreCase(loginUser.getUid())
-//                ||!RoleType.SELLER.getCode().equalsIgnoreCase(loginUser.getRole())
-//                ){
-//            throw new RuntimeException("只有该订单的商家才能更新订单状态!");
-//        }
+        if(null ==orderDB ||null ==loginUser){
+            throw new RuntimeException("订单信息错误，更新失败!");
+        }
+        if(OrderStatus.WAIT_SELLER_ACCEPT.getCode().equals(status)) {
+            if(!loginUser.getUid().equalsIgnoreCase(orderDB.getSellerUid())){
+                throw new RuntimeException("接单需要卖家确认");
+            }
+        }else if (OrderStatus.WAIT_SELLER_CONFIRM_PAYMENT.getCode().equals(status)){
+            if(!loginUser.getUid().equalsIgnoreCase(orderDB.getSellerUid())){
+                throw new RuntimeException("接单需要卖家确认");
+            }
+        }else if (OrderStatus.WAIT_SELLER_DISPATCH.getCode().equals(status)){
+            if(!loginUser.getUid().equalsIgnoreCase(orderDB.getSellerUid())){
+                throw new RuntimeException("接单需要卖家确认");
+            }
+        }else if (OrderStatus.PROBLEM.getCode().equals(status)){
+            if(!loginUser.getUid().equalsIgnoreCase(orderDB.getSellerUid())){
+                throw new RuntimeException("接单需要卖家确认");
+            }
+        }
         Date now = new Date();
         Order order = new Order();
         order.setId(id);
