@@ -3,7 +3,10 @@ package cn.author.fwwd.service.impl;
 import cn.author.fwwd.Utils.DateUtils;
 import cn.author.fwwd.common.PageBean;
 import cn.author.fwwd.config.PropertiesConfig;
-import cn.author.fwwd.dao.mapper.*;
+import cn.author.fwwd.dao.mapper.BuyerOrderMapper;
+import cn.author.fwwd.dao.mapper.OrderDetailMapper;
+import cn.author.fwwd.dao.mapper.OrderMapper;
+import cn.author.fwwd.dao.mapper.SellerOrderMapper;
 import cn.author.fwwd.dao.model.*;
 import cn.author.fwwd.enums.OrderStatus;
 import cn.author.fwwd.enums.RoleType;
@@ -11,19 +14,15 @@ import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.OrderService;
 import cn.author.fwwd.service.TokenService;
 import cn.author.fwwd.service.UserService;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.omg.CORBA.ORB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -48,10 +47,11 @@ public class OrderServiceImpl implements OrderService {
     public void saveOrder(String token,Order order){
         validateOrder(token,order);
         Long id = DateUtils.getSerialId(config.getServerId(), ServiceID.ORDER.getCode());
-        Integer orderStatus = OrderStatus.PLACED.getCode();
+        Integer orderStatus = OrderStatus.WAIT_SELLER_ACCEPT.getCode();
         Date now = new Date();
         order.setId(id);
         order.setUpdateTime(now);
+        order.setAddTime(now);
         order.setStatus(orderStatus);
 
         List<OrderDetail> list = order.getList();
@@ -85,27 +85,28 @@ public class OrderServiceImpl implements OrderService {
         }
         User loginUser = tokenService.getLoginUser(token);
         Order orderDB = getOrderById(id);
-        if(null ==orderDB ||null ==loginUser
-                ||!orderDB.getSellerUid().equalsIgnoreCase(loginUser.getUid())
-                ||!RoleType.SELLER.getCode().equalsIgnoreCase(loginUser.getRole())
-                ){
-            throw new RuntimeException("只有该订单的商家才能更新订单状态!");
-        }
+//        if(null ==orderDB ||null ==loginUser
+//                ||!orderDB.getSellerUid().equalsIgnoreCase(loginUser.getUid())
+//                ||!RoleType.SELLER.getCode().equalsIgnoreCase(loginUser.getRole())
+//                ){
+//            throw new RuntimeException("只有该订单的商家才能更新订单状态!");
+//        }
+        Date now = new Date();
         Order order = new Order();
         order.setId(id);
         order.setStatus(status);
-
+        order.setUpdateTime(now);
         SellerOrder sellerOrder = new SellerOrder();
-        sellerOrder.setId(id);
+        sellerOrder.setOrderId(id);
         sellerOrder.setStatus(status);
 
         BuyerOrder buyerOrder = new BuyerOrder();
-        buyerOrder.setId(id);
+        buyerOrder.setOrderId(id);
         buyerOrder.setStatus(status);
 
         orderMapper.updateStatusByPrimaryKey(order);
-        sellerOrderMapper.updateStatusByPrimaryKey(sellerOrder);
-        buyerOrderMapper.updateStatusByPrimaryKey(buyerOrder);
+        sellerOrderMapper.updateStatusByOrderId(sellerOrder);
+        buyerOrderMapper.updateStatusByOrderId(buyerOrder);
 
     }
     @Override

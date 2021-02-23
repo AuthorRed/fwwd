@@ -78,11 +78,11 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateStatusByPrimaryKey" parameterType="cn.author.fwwd.dao.model.SellerOrder" >
+  <update id="updateStatusByOrderId" parameterType="cn.author.fwwd.dao.model.SellerOrder" >
     update seller_order0
     set
       status = #{status,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
+    where order_id = #{orderId,jdbcType=BIGINT}
   </update>
 
   <select id="list" resultType="long" parameterType="cn.author.fwwd.dao.model.SellerOrder"  >

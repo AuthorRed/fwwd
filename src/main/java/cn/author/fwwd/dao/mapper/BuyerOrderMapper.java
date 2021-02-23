@@ -1,8 +1,9 @@
 package cn.author.fwwd.dao.mapper;
 
 import cn.author.fwwd.dao.model.BuyerOrder;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 @Mapper
 public interface BuyerOrderMapper {
     int deleteByPrimaryKey(Long id);
@@ -17,7 +18,7 @@ public interface BuyerOrderMapper {
 
     int updateByPrimaryKey(BuyerOrder record);
 
-    int updateStatusByPrimaryKey(BuyerOrder record);
+    int updateStatusByOrderId(BuyerOrder record);
 
     List<Long> list(BuyerOrder record);
 }

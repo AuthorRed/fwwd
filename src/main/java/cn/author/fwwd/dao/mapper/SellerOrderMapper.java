@@ -18,7 +18,7 @@ public interface SellerOrderMapper {
 
 
 
-    int updateStatusByPrimaryKey(SellerOrder record);
+    int updateStatusByOrderId(SellerOrder record);
 
     List<Long> list(SellerOrder record);
 }
