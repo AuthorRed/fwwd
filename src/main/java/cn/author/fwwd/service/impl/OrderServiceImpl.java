@@ -88,6 +88,9 @@ public class OrderServiceImpl implements OrderService {
         if(null ==orderDB ||null ==loginUser){
             throw new RuntimeException("订单信息错误，更新失败!");
         }
+        if(orderDB.getStatus()>=status){
+            throw new RuntimeException("更新状态顺序非法!");
+        }
         if(OrderStatus.WAIT_SELLER_ACCEPT.getCode().equals(status)) {
             if(!loginUser.getUid().equalsIgnoreCase(orderDB.getSellerUid())){
                 throw new RuntimeException("接单需要卖家确认");
