@@ -106,6 +106,20 @@ CREATE TABLE `order_detail0` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `comment0` (
+   `id` bigint(20) NOT NULL,
+   `parent_id` bigint(20) DEFAULT NULL,
+   `commodity_id` bigint(20) DEFAULT NULL,
+   `text` bigint(20) DEFAULT NULL,
+   `add_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   `uid` varchar(32) DEFAULT NULL,
+   `nick_name` varchar(32) DEFAULT NULL,
+   `status` int(11) DEFAULT NULL,
+   `rate` int(11) DEFAULT NULL,
+   `interest_count` int(11) DEFAULT NULL,
+   `quantity` varchar(32) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
 #Elastic search create index DSL
 PUT /commodity
