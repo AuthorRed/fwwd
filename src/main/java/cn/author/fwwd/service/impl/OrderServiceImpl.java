@@ -42,7 +42,11 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private TokenService tokenService;
 
-
+    @Override
+    public List<OrderDetail>  getOrderDetailByOrderId(Long id){
+        List<OrderDetail> list = orderDetailMapper.selectByOrderId(id);
+        return list;
+    }
     @Override
     public void saveOrder(String token,Order order){
         validateOrder(token,order);

@@ -39,5 +39,7 @@
                enableUpdateByExample="false"></table>-->
         <!--<table tableName="order_detail0" domainObjectName="OrderDetail" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
                enableUpdateByExample="false"></table>-->
+        <!--<table tableName="comment0" domainObjectName="Comment" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+               enableUpdateByExample="false"></table>-->
     </context>
 </generatorConfiguration>

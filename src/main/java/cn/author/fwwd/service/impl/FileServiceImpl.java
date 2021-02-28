@@ -4,8 +4,10 @@ import cn.author.fwwd.Utils.HashUtils;
 import cn.author.fwwd.config.PropertiesConfig;
 import cn.author.fwwd.dao.mapper.AttachMapper;
 import cn.author.fwwd.dao.model.Attach;
+import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.enums.ServiceID;
 import cn.author.fwwd.service.FileService;
+import cn.author.fwwd.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class FileServiceImpl implements FileService {
     private AttachMapper attachMapper;
     @Autowired
     private PropertiesConfig config;
+    @Autowired
+    private TokenService tokenService;
     public static final String UPLOAD_DIR ="UPLOAD_DIR";
 
     @Override
@@ -37,11 +41,16 @@ public class FileServiceImpl implements FileService {
        return attachMapper.selectByPrimaryKey(id);
     }
     @Override
-    public Long saveFile2Disk(MultipartFile multifile, Long fid, String category) throws Exception {
-        Attach attach = new Attach();
-        attach.setCategory(category);
-        attach.setFid(fid);
-        attach.setFidHash(HashUtils.getIntHash(String.valueOf(fid),ServiceID.FILE));
+    public Long saveFile2Disk(MultipartFile multifile,Attach attach) throws Exception {
+        if(StringUtils.isBlank(attach.getToken())){
+            throw new RuntimeException("会话过期，请重新登录！");
+        }
+        User loginUser = tokenService.getLoginUser(attach.getToken());
+        if(null ==loginUser){
+            throw new RuntimeException("会话过期，请重新登录！");
+        }
+        attach.setUploadUid(loginUser.getUid());
+        attach.setFidHash(HashUtils.getIntHash(String.valueOf(attach.getFid()),ServiceID.FILE));
         String suffix = multifile.getOriginalFilename().substring(multifile.getOriginalFilename().lastIndexOf(".")+1);
         if(StringUtils.isBlank(suffix)){
             throw new RuntimeException("附件格式非法，文件名称需带后缀，请重命名！");
@@ -57,12 +66,10 @@ public class FileServiceImpl implements FileService {
 
         attach.setId(fileId);
         attach.setHost("192.168.1.8:8080");
-        attach.setCategory(category);
         attach.setUrl(fileUrl);
         byte status = 1;
         attach.setStatus(status);
         attach.setFileName(filename);
-//        attach.setUploadBy(user.getUid());
         attachMapper.insertSelective(attach);
         return fileId;
     }

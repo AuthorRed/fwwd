@@ -51,7 +51,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public void addCommodity2ES(Commodity commodity){
         try {
-            Attach attach = attachMapper.selectFirstOneByFid(commodity.getId());
+            Attach attach = attachMapper.selectCommodityHeadImg(commodity.getId());
             Map<String, Object> jsonMap = new HashMap<>();
             jsonMap.put("id", commodity.getId());
             jsonMap.put("title", commodity.getTitle());

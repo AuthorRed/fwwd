@@ -9,10 +9,33 @@
     <result column="buyer_pay" property="buyerPay" jdbcType="DECIMAL" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="commodity_desc" property="commodityDesc" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="head_img" property="headImg" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, commodity_id, num, buyer_pay, remark, commodity_desc
+    id, order_id, commodity_id, num, buyer_pay, remark, commodity_desc, title, head_img
   </sql>
+
+
+  <insert id="insertInBatch"  parameterType="java.util.List" >
+  insert into order_detail0 (id, order_id, commodity_id,
+  num, remark , buyer_pay,
+  commodity_desc, title, head_img)
+  values
+  <foreach collection="list" item="item" separator=",">
+    (#{item.id,jdbcType=BIGINT}, #{item.orderId,jdbcType=BIGINT}, #{item.commodityId,jdbcType=VARCHAR},
+    #{item.num,jdbcType=INTEGER},#{item.remark,jdbcType=VARCHAR}, #{item.buyerPay,jdbcType=DECIMAL},
+    #{item.commodityDesc,jdbcType=VARCHAR},#{item.title,jdbcType=VARCHAR},#{item.headImg,jdbcType=VARCHAR})
+  </foreach>
+  </insert>
+
+  <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from order_detail0
+    where order_id = #{id,jdbcType=BIGINT}
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -23,25 +46,15 @@
     delete from order_detail0
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insertInBatch"  parameterType="java.util.List" >
-    insert into order_detail0 (id, order_id, commodity_id,
-    num, remark,
-    commodity_desc)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.orderId,jdbcType=BIGINT}, #{item.commodityId,jdbcType=VARCHAR},
-      #{item.num,jdbcType=INTEGER},#{item.remark,jdbcType=VARCHAR},
-      #{item.commodityDesc,jdbcType=VARCHAR})
-    </foreach>
-
-  </insert>
   <insert id="insert" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
-    insert into order_detail0 (id, order_id, commodity_id,
-      num, buyer_pay, remark,
-      commodity_desc)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{commodityId,jdbcType=VARCHAR},
-      #{num,jdbcType=INTEGER}, #{buyerPay,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR},
-      #{commodityDesc,jdbcType=VARCHAR})
+    insert into order_detail0 (id, order_id, commodity_id, 
+      num, buyer_pay, remark, 
+      commodity_desc, title, head_img
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{commodityId,jdbcType=VARCHAR}, 
+      #{num,jdbcType=INTEGER}, #{buyerPay,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+      #{commodityDesc,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{headImg,jdbcType=BIGINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.author.fwwd.dao.model.OrderDetail" >
     insert into order_detail0
@@ -67,6 +80,12 @@
       <if test="commodityDesc != null" >
         commodity_desc,
       </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="headImg != null" >
+        head_img,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -89,6 +108,12 @@
       </if>
       <if test="commodityDesc != null" >
         #{commodityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null" >
+        #{headImg,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -113,6 +138,12 @@
       <if test="commodityDesc != null" >
         commodity_desc = #{commodityDesc,jdbcType=VARCHAR},
       </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null" >
+        head_img = #{headImg,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -123,7 +154,9 @@
       num = #{num,jdbcType=INTEGER},
       buyer_pay = #{buyerPay,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
-      commodity_desc = #{commodityDesc,jdbcType=VARCHAR}
+      commodity_desc = #{commodityDesc,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      head_img = #{headImg,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

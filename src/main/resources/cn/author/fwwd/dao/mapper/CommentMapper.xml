@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.author.fwwd.dao.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="cn.author.fwwd.dao.model.Comment" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="commodity_id" property="commodityId" jdbcType="BIGINT" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="head_img" property="headImg" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="rate" property="rate" jdbcType="INTEGER" />
+    <result column="interest_count" property="interestCount" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="VARCHAR" />
+    <result column="has_attach" property="hasAttach" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parent_id, commodity_id, text, add_time, uid, nick_name, head_img, status, rate, 
+    interest_count, quantity ,has_attach
+  </sql>
+  <select id="selectByParentId" resultMap="BaseResultMap" parameterType="cn.author.fwwd.dao.model.Comment" >
+    select
+    <include refid="Base_Column_List" />
+    from comment0
+    where parent_id = #{parentId,jdbcType=BIGINT}
+    ORDER BY id desc
+    LIMIT #{offSet,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCommodityId" resultMap="BaseResultMap" parameterType="cn.author.fwwd.dao.model.Comment" >
+    select
+    <include refid="Base_Column_List" />
+    from comment0
+    where commodity_id = #{commodityId,jdbcType=BIGINT}
+    and parent_id = 0
+    ORDER BY id desc
+    LIMIT #{offSet,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from comment0
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from comment0
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.author.fwwd.dao.model.Comment" >
+    insert into comment0 (id, parent_id, commodity_id, 
+      text, add_time, uid, 
+      nick_name, head_img, status, 
+      rate, interest_count, quantity ,hasAttach
+      )
+    values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{commodityId,jdbcType=BIGINT}, 
+      #{text,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{uid,jdbcType=VARCHAR},
+      #{nickName,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{rate,jdbcType=INTEGER}, #{interestCount,jdbcType=INTEGER}, #{quantity,jdbcType=VARCHAR}
+      , #{hasAttach,jdbcType=INTEGER}
+
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.author.fwwd.dao.model.Comment" >
+    insert into comment0
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="commodityId != null" >
+        commodity_id,
+      </if>
+      <if test="text != null" >
+        text,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
+      </if>
+      <if test="headImg != null" >
+        head_img,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="interestCount != null" >
+        interest_count,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="hasAttach != null" >
+        has_attach,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="commodityId != null" >
+        #{commodityId,jdbcType=BIGINT},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null" >
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="interestCount != null" >
+        #{interestCount,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=VARCHAR},
+      </if>
+      <if test="hasAttach != null" >
+        #{hasAttach,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.author.fwwd.dao.model.Comment" >
+    update comment0
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="commodityId != null" >
+        commodity_id = #{commodityId,jdbcType=BIGINT},
+      </if>
+      <if test="text != null" >
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null" >
+        head_img = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="interestCount != null" >
+        interest_count = #{interestCount,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=VARCHAR},
+      </if>
+      <if test="hasAttach != null" >
+        has_attach = #{hasAttach,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.author.fwwd.dao.model.Comment" >
+    update comment0
+    set parent_id = #{parentId,jdbcType=BIGINT},
+      commodity_id = #{commodityId,jdbcType=BIGINT},
+      text = #{text,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      uid = #{uid,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=INTEGER},
+      interest_count = #{interestCount,jdbcType=INTEGER},
+      quantity = #{quantity,jdbcType=VARCHAR},
+      has_attach = #{hasAttach,jdbcType=INTEGER},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

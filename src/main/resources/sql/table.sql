@@ -108,12 +108,13 @@ CREATE TABLE `order_detail0` (
 
 CREATE TABLE `comment0` (
    `id` bigint(20) NOT NULL,
-   `parent_id` bigint(20) DEFAULT NULL,
+   `parent_id` bigint(20) DEFAULT '0',
    `commodity_id` bigint(20) DEFAULT NULL,
-   `text` bigint(20) DEFAULT NULL,
+   `text` varchar(512) DEFAULT NULL,
    `add_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    `uid` varchar(32) DEFAULT NULL,
    `nick_name` varchar(32) DEFAULT NULL,
+   `head_img` varchar(64) DEFAULT NULL,
    `status` int(11) DEFAULT NULL,
    `rate` int(11) DEFAULT NULL,
    `interest_count` int(11) DEFAULT NULL,

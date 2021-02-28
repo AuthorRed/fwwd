@@ -24,7 +24,19 @@
   <include refid="Base_Column_List" />
   from attach0
   where FID = #{fid,jdbcType=BIGINT}
+  order by id DESC
+  limit 50
 </select>
+  <select id="selectCommodityHeadImg" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from attach0
+    where FID = #{fid,jdbcType=BIGINT}
+    and status = 1
+    and type = 10
+    order by id DESC
+    limit 1
+  </select>
   <select id="selectFirstOneByFid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />

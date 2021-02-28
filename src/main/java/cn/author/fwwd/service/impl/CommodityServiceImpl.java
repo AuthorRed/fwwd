@@ -115,7 +115,7 @@ public class CommodityServiceImpl implements CommodityService {
             category.setSellerUid(record.getSeller());
             SellerCategoryService.saveSellerCategory(category);
         }
-        Attach attach = attachMapper.selectFirstOneByFid(record.getId());
+        Attach attach = attachMapper.selectCommodityHeadImg(record.getId());
         record.setHeadImg(attach.getId());
         searchService.addCommodity2ES(record);
         return commodityMapper.insertSelective(record);

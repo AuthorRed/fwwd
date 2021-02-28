@@ -10,7 +10,7 @@ public interface FileService {
 
     Attach selectByPrimaryKey(Long id);
 
-    Long saveFile2Disk(MultipartFile uploadFile, Long fid, String category) throws Exception;
+    Long saveFile2Disk(MultipartFile uploadFile,Attach attach) throws Exception;
 
     public void deleteByPrimaryKey(String id) throws Throwable;
 

@@ -3,6 +3,7 @@ package cn.author.fwwd.controller;
 import cn.author.fwwd.common.PageBean;
 import cn.author.fwwd.common.ResultMsg;
 import cn.author.fwwd.dao.model.Order;
+import cn.author.fwwd.dao.model.OrderDetail;
 import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.service.OrderService;
 import cn.author.fwwd.service.TokenService;
@@ -27,7 +28,19 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-
+    @RequestMapping("getOrderDetailByOrderId")
+    public ResultMsg getOrderDetailByOrderId(Long id){
+        ResultMsg resultMsg = null;
+        try {
+            List<OrderDetail> list = orderService.getOrderDetailByOrderId(id);
+            resultMsg = ResultMsg.success();
+            resultMsg.getExtenal().put("list",list);
+        }catch (Exception e){
+            log.error("订单详情查询出错,",e);
+            return ResultMsg.error(e.getMessage());
+        }
+        return resultMsg;
+    }
     @RequestMapping("getById")
     public ResultMsg getById(Long id){
         ResultMsg resultMsg = null;

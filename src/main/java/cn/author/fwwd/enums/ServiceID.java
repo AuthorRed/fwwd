@@ -3,6 +3,7 @@ package cn.author.fwwd.enums;
 
 
 public enum ServiceID {
+    COMMENT("COMMENT",71l,1),
     FILE("FILE",11l,1),
     COMMODITY("COMMODITY",12l,1),
     USER("USER",31l,1),

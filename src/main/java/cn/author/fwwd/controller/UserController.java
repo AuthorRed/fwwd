@@ -24,12 +24,10 @@ public class UserController {
         ResultMsg resultMsg = null;
         try {
             User user = userService.usernamePwdLogin(uid, pwd);
-            Token token = tokenService.saveToken(user);
-            User loginUser = tokenService.getLoginUser(token.getToken());
-            System.out.println(JSON.toJSONString(loginUser));
             if(null==user){
                 return ResultMsg.error("用户名密码不正确!");
             }
+            Token token = tokenService.saveToken(user);
             user.setToken(token.getToken());
             resultMsg = ResultMsg.success();
             resultMsg.getExtenal().put("user",user);
