@@ -96,15 +96,17 @@ CREATE TABLE `seller_category0` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `order_detail0` (
-  `id` bigint(20) NOT NULL,
-  `order_id` bigint(20) DEFAULT NULL,
-  `commodity_id` varchar(64) DEFAULT NULL,
-  `num` int(11) DEFAULT NULL,
-  `buyer_pay` decimal(8,2) DEFAULT NULL,
-  `remark` varchar(128) DEFAULT NULL,
-  `commodity_desc` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+   `id` bigint(20) NOT NULL,
+   `order_id` bigint(20) DEFAULT NULL,
+   `commodity_id` varchar(64) DEFAULT NULL,
+   `num` int(11) DEFAULT NULL,
+   `buyer_pay` decimal(8,2) DEFAULT NULL,
+   `remark` varchar(128) DEFAULT NULL,
+   `commodity_desc` varchar(64) DEFAULT NULL,
+   `title` varchar(128) DEFAULT NULL,
+   `head_img` bigint(20) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
 CREATE TABLE `comment0` (
    `id` bigint(20) NOT NULL,
@@ -119,8 +121,10 @@ CREATE TABLE `comment0` (
    `rate` int(11) DEFAULT NULL,
    `interest_count` int(11) DEFAULT NULL,
    `quantity` varchar(32) DEFAULT NULL,
+   `has_attach` int(11) DEFAULT NULL,
    PRIMARY KEY (`id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+
 
 #Elastic search create index DSL
 PUT /commodity
