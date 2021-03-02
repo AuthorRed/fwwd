@@ -14,7 +14,7 @@ public interface TokenService {
 
 	void refresh(User loginUser);
 
-	User getLoginUser(String token);
+	User getLoginUser(String token) ;
 
 	boolean deleteToken(String token);
 

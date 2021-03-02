@@ -1,14 +1,15 @@
 package cn.author.fwwd.controller;
 
 import cn.author.fwwd.common.ResultMsg;
+import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.service.TokenService;
 import cn.author.fwwd.service.UserService;
 import cn.author.fwwd.vo.Token;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import cn.author.fwwd.dao.model.User;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("user")
@@ -18,7 +19,21 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TokenService tokenService;
-
+    @PostMapping("refreshTokenLogin")
+    public ResultMsg refreshTokenLogin(String refreshToken){
+        ResultMsg resultMsg = null;
+        try {
+            User user = userService.refreshTokenLogin(refreshToken);
+            Token token = tokenService.saveToken(user);
+            user.setToken(token.getToken());
+            resultMsg = ResultMsg.success();
+            resultMsg.getExtenal().put("user",user);
+        }catch (Exception e){
+            log.error("登录失败:",e);
+            return ResultMsg.error(e.getMessage());
+        }
+        return resultMsg;
+    }
     @PostMapping("login")
     public ResultMsg login(String uid,String pwd){
         ResultMsg resultMsg = null;

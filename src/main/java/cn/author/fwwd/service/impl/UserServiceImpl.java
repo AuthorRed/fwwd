@@ -3,7 +3,9 @@ package cn.author.fwwd.service.impl;
 import cn.author.fwwd.Utils.DateUtils;
 import cn.author.fwwd.Utils.HashUtils;
 import cn.author.fwwd.config.PropertiesConfig;
+import cn.author.fwwd.dao.mapper.RefreshTokenMapper;
 import cn.author.fwwd.dao.mapper.UserMapper;
+import cn.author.fwwd.dao.model.RefreshToken;
 import cn.author.fwwd.dao.model.User;
 import cn.author.fwwd.enums.RoleType;
 import cn.author.fwwd.enums.ServiceID;
@@ -12,9 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.SimpleIdGenerator;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,9 +24,25 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private PropertiesConfig config;
+    @Autowired
+    private RefreshTokenMapper refreshTokenMapper;
+    @Override
+    public User refreshTokenLogin(String refreshToken){
+        if(StringUtils.isBlank(refreshToken)){
+            return null;
+        }
+        RefreshToken dbToken = refreshTokenMapper.selectByPrimaryKey(Long.valueOf(refreshToken));
+        if(null!=dbToken && StringUtils.isNotBlank(dbToken.getUid())){
+            return loadUserByUsername(dbToken.getUid());
+        }
+        return null;
+    }
+
+
     @Override
     public User loadUserByUsername(String uid){
-        return userMapper.selectByUID(uid);
+        User user = userMapper.selectByUID(uid);
+        return clearPwdSaltHash(user);
     }
 
     @Override
@@ -46,17 +62,15 @@ public class UserServiceImpl implements UserService {
         }
         String encodingPWD = encodingPWD(pwd, user.getSalt());
         if(null!=encodingPWD&&encodingPWD.equalsIgnoreCase(user.getPwd())){
-            user.setSalt(null);
-            return user;
+            RefreshToken refreshToken = new RefreshToken();
+            refreshToken.setId(DateUtils.getSerialId(config.getServerId(),ServiceID.REFRESH_TOKEN.getCode()));
+            refreshToken.setUid(username);
+            refreshToken.setUpdateTime(new Date());
+            refreshTokenMapper.insertSelective(refreshToken);
+            user.setRefresh_token(String.valueOf(refreshToken.getId()));
+            return clearPwdSaltHash(user);
         }
         return null;
-    }
-    private String encodingPWD(String pwd,String salt){
-        String raw = pwd+salt;
-        if(StringUtils.isBlank(raw)){
-            return null;
-        }
-        return DigestUtils.md5DigestAsHex(raw.getBytes());
     }
     @Override
     public User register(User user) throws Exception {
@@ -80,5 +94,21 @@ public class UserServiceImpl implements UserService {
         user.setSalt(null);
         user.setPwd(null);
         return user;
+    }
+    private User clearPwdSaltHash(User user){
+        if(null ==user){
+            return  null;
+        }
+        user.setSalt(null);
+        user.setPwd(null);
+        user.setHash(null);
+        return user;
+    }
+    private String encodingPWD(String pwd,String salt){
+        String raw = pwd+salt;
+        if(StringUtils.isBlank(raw)){
+            return null;
+        }
+        return DigestUtils.md5DigestAsHex(raw.getBytes());
     }
 }

@@ -125,7 +125,12 @@ CREATE TABLE `comment0` (
    PRIMARY KEY (`id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
-
+CREATE TABLE `refresh_token0` (
+   `id` BIGINT(20) NOT NULL,
+   `uid` VARCHAR(32) DEFAULT NULL,
+   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   PRIMARY KEY (`id`)
+ ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4
 #Elastic search create index DSL
 PUT /commodity
 {

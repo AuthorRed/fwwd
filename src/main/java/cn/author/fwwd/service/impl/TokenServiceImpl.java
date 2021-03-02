@@ -25,6 +25,11 @@ public class TokenServiceImpl implements TokenService {
 	 */
 	@Value("${token.expire.seconds}")
 	private Integer expireSeconds;
+
+	private static final Long MINUTES_30 = 30 * 60 * 1000L;
+
+	public static final String TOKEN_USER_ERROR = "TOKEN_USER_ERROR";
+
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
@@ -54,10 +59,32 @@ public class TokenServiceImpl implements TokenService {
 	}
 
 	@Override
-	public User getLoginUser(String token) {
-		return (User)redisTemplate.boundValueOps(getTokenKey(token)).get();
+	public User getLoginUser(String token){
+		User loginUser = (User)redisTemplate.boundValueOps(getTokenKey(token)).get();
+		if (loginUser != null) {
+			loginUser = checkLoginTime(loginUser);
+		}else{
+			throw new RuntimeException(TOKEN_USER_ERROR);
+		}
+		return loginUser;
 	}
-
+	/**
+	 * 校验时间<br>
+	 * 过期时间与当前时间对比，临近过期30分钟内的话，自动刷新缓存
+	 *
+	 * @param loginUser
+	 * @return
+	 */
+	private User checkLoginTime(User loginUser) {
+		long expireTime = loginUser.getExpireTime();
+		long currentTime = System.currentTimeMillis();
+		if (expireTime - currentTime <= MINUTES_30) {
+			String token = loginUser.getToken();
+			loginUser.setToken(token);
+			refresh(loginUser);
+		}
+		return loginUser;
+	}
 	@Override
 	public boolean deleteToken(String token) {
 		String key = getTokenKey(token);

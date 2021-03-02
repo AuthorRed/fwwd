@@ -10,5 +10,7 @@ public interface UserService {
 
     User usernamePwdLogin(String username, String pwd);
 
+    User refreshTokenLogin(String refreshToken);
+
     User register(User user)  throws Exception ;
 }

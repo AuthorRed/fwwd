@@ -1,10 +1,7 @@
 package cn.author.fwwd.Utils;
 
-import cn.author.fwwd.config.PropertiesConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -44,7 +41,7 @@ public  class DateUtils {
             //123456789012311000
             long serverPart = server * 1000;
             //123456789012311110
-            long servicePart = service * 100;
+            long servicePart = service * 10;
             //123456789012311111
             long serial = idCount.intValue();
             serialId = timestamp + serverPart + servicePart + serial;

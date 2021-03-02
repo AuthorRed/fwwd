@@ -41,5 +41,7 @@
                enableUpdateByExample="false"></table>-->
         <!--<table tableName="comment0" domainObjectName="Comment" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
                enableUpdateByExample="false"></table>-->
+        <!--<table tableName="refresh_token0" domainObjectName="RefreshToken" enableDeleteByExample="false" enableSelectByExample="false" enableCountByExample="false"
+               enableUpdateByExample="false"></table>-->
     </context>
 </generatorConfiguration>
