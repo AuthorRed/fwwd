@@ -4,12 +4,9 @@ import cn.author.fwwd.common.PageBean;
 import cn.author.fwwd.common.ResultMsg;
 import cn.author.fwwd.dao.model.Order;
 import cn.author.fwwd.dao.model.OrderDetail;
-import cn.author.fwwd.dao.model.User;
+import cn.author.fwwd.filter.TokenFilter;
 import cn.author.fwwd.service.OrderService;
 import cn.author.fwwd.service.TokenService;
-import cn.author.fwwd.service.UserService;
-import cn.author.fwwd.vo.Token;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -55,9 +53,10 @@ public class OrderController {
         return resultMsg;
     }
     @RequestMapping("list")
-    public ResultMsg list(String orderType,String token, Integer status, PageBean pageBean){
+    public ResultMsg list(String orderType, HttpServletRequest request, Integer status, PageBean pageBean){
         ResultMsg resultMsg = null;
         try {
+            String token = TokenFilter.getToken(request);
             List<Order> list = orderService.getPageList(orderType,token, status, pageBean);
             resultMsg = ResultMsg.success();
             resultMsg.getExtenal().put("list",list);
@@ -69,9 +68,11 @@ public class OrderController {
     }
 
     @PostMapping("save")
-    public ResultMsg save(@RequestBody Order order){
+    public ResultMsg save(@RequestBody Order order, HttpServletRequest request){
         ResultMsg resultMsg = null;
         try {
+            String token = TokenFilter.getToken(request);
+            order.setToken(token);
             orderService.saveOrder(order.getToken(),order);
             resultMsg = ResultMsg.success();
         }catch (Exception e){
@@ -82,9 +83,10 @@ public class OrderController {
     }
 
     @PostMapping("update")
-    public ResultMsg update(String token,Long id,Integer status){
+    public ResultMsg update( HttpServletRequest request,Long id,Integer status){
         ResultMsg resultMsg = null;
         try {
+            String token = TokenFilter.getToken(request);
             orderService.updateOrderStatus(token,id,status);
             resultMsg = ResultMsg.success();
         }catch (Exception e){

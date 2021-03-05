@@ -1,11 +1,10 @@
 package cn.author.fwwd.controller;
 
-import cn.author.fwwd.Utils.DateUtils;
 import cn.author.fwwd.Utils.FileContentTypeUtils;
 import cn.author.fwwd.common.ResultMsg;
 import cn.author.fwwd.config.PropertiesConfig;
 import cn.author.fwwd.dao.model.Attach;
-import cn.author.fwwd.enums.ServiceID;
+import cn.author.fwwd.filter.TokenFilter;
 import cn.author.fwwd.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,9 +32,11 @@ public class FileController {
      * @return
      */
     @PostMapping("fileUpload")
-    public ResultMsg upload(@RequestParam("file") MultipartFile file,Attach attach){
+    public ResultMsg upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,Attach attach){
         // 要上传的目标文件存放路径
         try{
+            String token = TokenFilter.getToken(request);
+            attach.setToken(token);
 //            String localPath = "D:\\upload";
 //            String fullPath = localPath + DateUtils.getSerialId(config.getServerId(), ServiceID.FILE.getCode());
             attach.setCategory("image");

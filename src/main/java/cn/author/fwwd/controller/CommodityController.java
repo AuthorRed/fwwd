@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,7 +31,7 @@ public class CommodityController {
     @Autowired
     private CommentService commentService;
     @GetMapping("list")
-    public ResultMsg list(Commodity commodity){
+    public ResultMsg list( Commodity commodity){
         ResultMsg resultMsg = null;
         try {
             List<Commodity> list  = commodityService.pageList(commodity);

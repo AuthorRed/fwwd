@@ -31,9 +31,19 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isBlank(refreshToken)){
             return null;
         }
-        RefreshToken dbToken = refreshTokenMapper.selectByPrimaryKey(Long.valueOf(refreshToken));
+        RefreshToken dbToken = refreshTokenMapper.selectByPrimaryKey(refreshToken);
+        String newRefreshToken = UUID.randomUUID().toString();
+        dbToken.setRefreshToken(newRefreshToken);
+        dbToken.setUpdateTime(new Date());
+//        refreshTokenMapper.updateByUidSelective(dbToken);
         if(null!=dbToken && StringUtils.isNotBlank(dbToken.getUid())){
-            return loadUserByUsername(dbToken.getUid());
+            User user = loadUserByUsername(dbToken.getUid());
+            if(null!=null){
+                user.setRefreshToken(dbToken.getRefreshToken());
+                refreshTokenMapper.deleteByUid(dbToken.getUid());
+                refreshTokenMapper.insertSelective(dbToken);
+            }
+            return user;
         }
         return null;
     }
@@ -63,11 +73,11 @@ public class UserServiceImpl implements UserService {
         String encodingPWD = encodingPWD(pwd, user.getSalt());
         if(null!=encodingPWD&&encodingPWD.equalsIgnoreCase(user.getPwd())){
             RefreshToken refreshToken = new RefreshToken();
-            refreshToken.setId(DateUtils.getSerialId(config.getServerId(),ServiceID.REFRESH_TOKEN.getCode()));
+            refreshToken.setRefreshToken(UUID.randomUUID().toString());
             refreshToken.setUid(username);
             refreshToken.setUpdateTime(new Date());
             refreshTokenMapper.insertSelective(refreshToken);
-            user.setRefresh_token(String.valueOf(refreshToken.getId()));
+            user.setRefreshToken(refreshToken.getRefreshToken());
             return clearPwdSaltHash(user);
         }
         return null;

@@ -34,7 +34,8 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
 token:
   expire:
-    seconds: 7200
+    #seconds: 7200
+    seconds: 10
 logging:
   level:
     cn.author.fwwd.dao : debug

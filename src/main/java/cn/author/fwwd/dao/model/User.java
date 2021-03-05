@@ -33,7 +33,7 @@ public class User {
 
     private String token;
 
-    private String refresh_token;
+    private String refreshToken;
 
     private Long loginTime;
 

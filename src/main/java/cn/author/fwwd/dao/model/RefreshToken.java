@@ -3,18 +3,18 @@ package cn.author.fwwd.dao.model;
 import java.util.Date;
 
 public class RefreshToken {
-    private Long id;
+    private String refreshToken;
 
     private String uid;
 
     private Date updateTime;
 
-    public Long getId() {
-        return id;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken == null ? null : refreshToken.trim();
     }
 
     public String getUid() {

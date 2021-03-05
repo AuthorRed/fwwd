@@ -7,6 +7,7 @@ import cn.author.fwwd.service.UserService;
 import cn.author.fwwd.vo.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TokenService tokenService;
-    @PostMapping("refreshTokenLogin")
+    @GetMapping("refreshTokenLogin")
     public ResultMsg refreshTokenLogin(String refreshToken){
         ResultMsg resultMsg = null;
         try {

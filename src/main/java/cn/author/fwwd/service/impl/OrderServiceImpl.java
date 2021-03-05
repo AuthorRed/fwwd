@@ -132,13 +132,7 @@ public class OrderServiceImpl implements OrderService {
     }
     @Override
     public List<Order> getPageList(String orderType,String token, Integer status, PageBean pageBean){
-        if(StringUtils.isBlank(token)){
-            throw new RuntimeException("订单查询请登录!");
-        }
         User loginUser = tokenService.getLoginUser(token);
-        if(null==loginUser){
-            throw new RuntimeException("用户会话失效，请重新登录!");
-        }
         List<Long> orderIdList = null;
         if(RoleType.SELLER.getCode().equalsIgnoreCase(orderType)){
             SellerOrder sellerOrder = new SellerOrder();

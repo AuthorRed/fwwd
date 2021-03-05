@@ -19,7 +19,7 @@ import java.io.IOException;
 //@Component
 public class TokenFilter extends OncePerRequestFilter {
 
-	private static final String TOKEN_KEY = "Authorization";
+	private static final String TOKEN_KEY = "token";
 
 	@Autowired
 	private TokenService tokenService;
@@ -46,9 +46,9 @@ public class TokenFilter extends OncePerRequestFilter {
 	 * @return
 	 */
 	public static String getToken(HttpServletRequest request) {
-		String token = request.getParameter(TOKEN_KEY);
+		String token = request.getHeader(TOKEN_KEY);
 		if (StringUtils.isBlank(token)) {
-			token = request.getHeader(TOKEN_KEY);
+			 token = request.getParameter(TOKEN_KEY);
 		}
 		return token;
 	}
